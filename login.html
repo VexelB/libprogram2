@@ -1,18 +1,14 @@
 <body>
-        Enter password!
-        <form id = 'main'>
-            <input name = "pass" id = "pass" type = "password">
-            <button id = 'submit'>Enter</button>
-        </form>
+    Enter password!
+    <form id = 'main'>
+        <input name = "pass" id = "pass" type = "password">
+        <button id = 'submit'>Enter</button>
+    </form>
     <script>
-        log = () => {
-            ws.send(JSON.stringify({pass : document.getElementById('pass').value}))
-            window.location.href = window.location.pathname + window.location.search + window.location.hash;
-        }
         window.history.pushState(null, null, '/');
         const ws = new WebSocket ("ws://localhost:5354")
         document.getElementById('main').addEventListener('submit', () => {
-            log();
+            ws.send(JSON.stringify({pass : document.getElementById('pass').value}))
         })
     </script>
 </body>
