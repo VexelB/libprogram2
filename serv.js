@@ -3,13 +3,22 @@ const app = new express();
 const path = require("path")
 const { Server } = require('ws');
 const wss = new Server({ port: 5354 });
+const password = 'adminka';
 
 app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'))
+    if (req.query.pass == password) {
+        res.sendFile(path.join(__dirname, 'index.html'))
+        
+    }
+    else {
+        res.sendFile(path.join(__dirname, 'login.html'));
+    }
 })
 
 
 app.listen(5353, () => {})
 wss.on('connection', (ws, req) => {
-    ws.send('hi');
+    ws.on('message', (d) => {
+        
+    })
 })
