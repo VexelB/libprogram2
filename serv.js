@@ -4,9 +4,10 @@ const path = require("path")
 const { Server } = require('ws');
 const wss = new Server({ port: 5354 });
 const password = 'adminka';
+let clients = [];
 
 app.get('/*', (req, res) => {
-    if (req.query.pass == password) {
+    if (clients.includes(req.ip)) {
         res.sendFile(path.join(__dirname, 'index.html'))
     }
     else {
@@ -16,8 +17,13 @@ app.get('/*', (req, res) => {
 
 app.listen(5353, () => {})
 wss.on('connection', (ws, req) => {
-    console.log('ura')
     ws.on('message', (d) => {
-        let temp = JSON.parse(d);
+        d = JSON.parse(d)
+        if (d.pass){
+            if (d.pass == password) {
+                clients.push(req.connection.remoteAddress);
+                setTimeout(() => {clients.splice(clients.indexOf(req.connection.remoteAddress, 1))}, 600000)
+            }
+        }
     })
 })
