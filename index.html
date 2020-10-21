@@ -1,12 +1,20 @@
 <html>
 <head>
+    <title>Hello</title>
 </head>
 <body>
-    vesem ku
-    <div id = "mda"></div>
+    Not done yet!
 </body>
 <script>
     window.history.pushState(null, null, '/');
-    console.log(document.getElementById('mda'));
+    const ws = new WebSocket ("ws://localhost:5354")
+    let reqbody = {}
+
+    reqbody.action = "get"
+    reqbody.table = "books"
+    setTimeout(() => {ws.send(JSON.stringify(reqbody))}, 1000) 
+    ws.onmessage = (d) => {
+        console.log(d.data)
+    };
 </script>
 </html>
