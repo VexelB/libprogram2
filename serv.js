@@ -3,7 +3,7 @@ const app = new express();
 const path = require("path")
 const { Server } = require('ws');
 const wss = new Server({ port: 5354 });
-const password = 'adminka';
+const password = 'random';
 let clients = [];
 
 app.get('/*', (req, res) => {
