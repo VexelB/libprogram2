@@ -1,3 +1,4 @@
+const { resolveSoa } = require("dns");
 const express = require("express");
 const app = new express();
 const path = require("path")
@@ -7,6 +8,11 @@ const wss = new Server({ port: 5354 });
 const password = 'random';
 let clients = [];
 
+app.get('/*.js', (req, res) => {
+    if (clients.includes(req.ip)) {
+        res.sendFile(path.join(__dirname, req.path))
+    }
+})
 app.get('/*', (req, res) => {
     if (clients.includes(req.ip)) {
         res.sendFile(path.join(__dirname, 'index.html'))
@@ -32,7 +38,6 @@ wss.on('connection', (ws, req) => {
                   console.error(err.message);
                 }
             });
-            let answer = [];
             db.serialize(() => {
                 db.all(`select * from ${d.table}`, (err,rows) => {
                     ws.send(JSON.stringify({action: "rows", content: rows}))
