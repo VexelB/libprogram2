@@ -8,7 +8,7 @@ const wss = new Server({ port: 5354 });
 const password = 'random';
 let clients = [];
 
-app.get('/*.js', (req, res) => {
+app.get('/*.*', (req, res) => {
     if (clients.includes(req.ip)) {
         res.sendFile(path.join(__dirname, req.path))
     }
@@ -29,7 +29,6 @@ wss.on('connection', (ws, req) => {
         if (d.pass){
             if (d.pass == password) {
                 clients.push(req.connection.remoteAddress);
-                setTimeout(() => {clients.splice(clients.indexOf(req.connection.remoteAddress, 1))}, 600000)
             }
         }
         if (d.action == "get") {
