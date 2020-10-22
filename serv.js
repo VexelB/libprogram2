@@ -35,7 +35,7 @@ wss.on('connection', (ws, req) => {
             let answer = [];
             db.serialize(() => {
                 db.all(`select * from ${d.table}`, (err,rows) => {
-                    ws.send(JSON.stringify(rows))
+                    ws.send(JSON.stringify({action: "rows", content: rows}))
                 })
             })
             
