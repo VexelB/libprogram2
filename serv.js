@@ -21,6 +21,14 @@ app.get('/*', (req, res) => {
         res.sendFile(path.join(__dirname, 'login.html'));
     }
 })
+app.post('/*', (req, res) => {
+    if (clients.includes(req.ip)) {
+        res.sendFile(path.join(__dirname, 'index.html'))
+    }
+    else {
+        res.sendFile(path.join(__dirname, 'login.html'));
+    }
+})
 
 app.listen(5353, () => {})
 wss.on('connection', (ws, req) => {
