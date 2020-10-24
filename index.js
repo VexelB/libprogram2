@@ -1,5 +1,4 @@
 // init
-// window.history.pushState(null, null, '/');
 const ws = new WebSocket ("ws://localhost:5354")
 let reqbody = {}
 // setTimeout(() => {ws.send(JSON.stringify(reqbody))}, 1000)

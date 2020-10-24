@@ -8,10 +8,10 @@
         <button id = 'submit'>Enter</button>
     </form>
     <script>
-        window.history.pushState(null, null, '/');
-        const ws = new WebSocket ("ws://localhost:5354")
-        document.getElementById('main').addEventListener('submit', () => {
-            ws.send(JSON.stringify({pass : document.getElementById('pass').value}))
-        })
+        // window.history.pushState(null, null, '/');
+        // const ws = new WebSocket ("ws://localhost:5354")
+        // document.getElementById('main').addEventListener('submit', () => {
+        //     ws.send(JSON.stringify({pass : document.getElementById('pass').value}))
+        // })
     </script>
 </body>

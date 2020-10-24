@@ -8,6 +8,8 @@ const wss = new Server({ port: 5354 });
 const password = 'random';
 let clients = [];
 
+app.use(express.urlencoded());
+
 app.get('/*.*', (req, res) => {
     if (clients.includes(req.ip)) {
         res.sendFile(path.join(__dirname, req.path))
@@ -22,11 +24,9 @@ app.get('/*', (req, res) => {
     }
 })
 app.post('/*', (req, res) => {
-    if (clients.includes(req.ip)) {
+    if (req.body.pass == password) {
+        clients.push(req.connection.remoteAddress);
         res.sendFile(path.join(__dirname, 'index.html'))
-    }
-    else {
-        res.sendFile(path.join(__dirname, 'login.html'));
     }
 })
 
@@ -34,11 +34,6 @@ app.listen(5353, () => {})
 wss.on('connection', (ws, req) => {
     ws.on('message', (d) => {
         d = JSON.parse(d)
-        if (d.pass){
-            if (d.pass == password) {
-                clients.push(req.connection.remoteAddress);
-            }
-        }
         if (d.action == "get") {
             let db = new sqlite3.Database('sqlite.db', sqlite3.OPEN_READWRITE, (err) => {
                 if (err) {
