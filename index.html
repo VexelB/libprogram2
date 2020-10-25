@@ -3,12 +3,41 @@
     <title>Hello</title>
 </head>
 <body>
-    Not done yet!
+    Школьная библиотка v0.5
     <div id = "header">
-        <div style="width: 90%;">123</div>
-        <div>321</div>
+        <div id="menu">
+            <div id = "" class = "btns">Выдача/Прием книг</div>
+            <div id = "tables" class = "btns">Таблицы
+                <ul class="submenu">
+                    <li class = "table"><div class = "btns" id = "pupil">Ученики</div></li>
+                    <li class = "table"><div class = "btns" id = "staff">Сотрудники</div></li>
+                    <li class = "table"><div class = "btns" id = "Sbooks">Учебники</div></li>
+                    <li class = "table"><div class = "btns" id = "books">Книги</div></li>
+                    <li class = "table"><div class = "btns" id = "class">Классы</div></li>
+                    <li class = "table"><div class = "btns" id = "TakeHistory">Выдача книг</div></li>
+                </ul>
+            </div>
+            <div class = "btns">Прочее</div>
+        </div>
     </div>
-    <div id = "maindata"></div>
+    <div id = "main">
+        <div id = "maindata" style="height: 90%; overflow: auto;">
+            <div class = "data" id = "pupil" style = "display: none;"></div>
+            <div class = "data" id = "staff" style = "display: none;"></div>
+            <div class = "data" id = "Sbooks" style = "display: none;"></div>
+            <div class = "data" id = "books" style = "display: none;"></div>
+            <div class = "data" id = "class" style = "display: none;"></div>
+            <div class = "data" id = "TakeHistory" style = "display: none;"></div>
+        </div>
+        <div id = "pages">
+            <div class = "pages" id = "pupil" style = "display: none;"></div>
+            <div class = "pages" id = "staff" style = "display: none;"></div>
+            <div class = "pages" id = "Sbooks" style = "display: none;"></div>
+            <div class = "pages" id = "books" style = "display: none;"></div>
+            <div class = "pages" id = "class" style = "display: none;"></div>
+            <div class = "pages" id = "TakeHistory" style = "display: none;"></div>
+        </div>
+    </div>
 </body>
 <script src = "index.js"></script>
 <link href = "style.css" rel="stylesheet" type="text/css"></style>

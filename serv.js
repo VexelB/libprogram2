@@ -27,6 +27,7 @@ app.post('/*', (req, res) => {
     if (req.body.pass == password) {
         clients.push(req.connection.remoteAddress);
         res.sendFile(path.join(__dirname, 'index.html'))
+        setTimeout(() => {clients.splice(clients.indexOf(req.connection.remoteAddress, 1))}, 1000)
     }
 })
 
@@ -42,7 +43,7 @@ wss.on('connection', (ws, req) => {
             });
             db.serialize(() => {
                 db.all(`select * from ${d.table}`, (err,rows) => {
-                    ws.send(JSON.stringify({action: "rows", content: rows}))
+                    ws.send(JSON.stringify({action: "rows", content: rows, table: d.table}))
                 })
             })
             
