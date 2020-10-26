@@ -10,6 +10,10 @@ let clients = [];
 
 app.use(express.urlencoded());
 
+app.use('/books.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'books.html'))
+})
+
 app.get('/*.*', (req, res) => {
     if (clients.includes(req.ip)) {
         res.sendFile(path.join(__dirname, req.path))
@@ -29,10 +33,23 @@ app.post('/*', (req, res) => {
         res.sendFile(path.join(__dirname, 'index.html'))
         setTimeout(() => {clients.splice(clients.indexOf(req.connection.remoteAddress, 1))}, 1000)
     }
+    else {
+        res.sendFile(path.join(__dirname, 'login.html'));
+    }
 })
 
 app.listen(5353, () => {})
 wss.on('connection', (ws, req) => {
+    let db = new sqlite3.Database('sqlite.db', sqlite3.OPEN_READWRITE, (err) => {
+        if (err) {
+          console.error(err.message);
+        }
+    });
+    db.serialize(() => {
+        db.all(`select * from assoc`, (err,rows) => {
+            ws.send(JSON.stringify({action: "init", content: rows}))
+        })
+    })
     ws.on('message', (d) => {
         d = JSON.parse(d)
         if (d.action == "get") {
@@ -42,11 +59,10 @@ wss.on('connection', (ws, req) => {
                 }
             });
             db.serialize(() => {
-                db.all(`select * from ${d.table}`, (err,rows) => {
+                db.all(d.sql, (err,rows) => {
                     ws.send(JSON.stringify({action: "rows", content: rows, table: d.table}))
                 })
             })
-            
         }
     })
 })

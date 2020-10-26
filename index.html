@@ -9,27 +9,25 @@
             <div id = "" class = "btns">Выдача/Прием книг</div>
             <div id = "tables" class = "btns">Таблицы
                 <ul class="submenu">
-                    <li class = "table"><div class = "btns" id = "pupil">Ученики</div></li>
-                    <li class = "table"><div class = "btns" id = "staff">Сотрудники</div></li>
-                    <li class = "table"><div class = "btns" id = "Sbooks">Учебники</div></li>
-                    <li class = "table"><div class = "btns" id = "books">Книги</div></li>
-                    <li class = "table"><div class = "btns" id = "class">Классы</div></li>
-                    <li class = "table"><div class = "btns" id = "TakeHistory">Выдача книг</div></li>
+                    <li class = "tables"><div class = "btns" id = "pupil">Ученики</div></li>
+                    <li class = "tables"><div class = "btns" id = "staff">Сотрудники</div></li>
+                    <li class = "tables"><div class = "btns" id = "Sbooks">Учебники</div></li>
+                    <li class = "tables"><div class = "btns" id = "books">Книги</div></li>
+                    <li class = "tables"><div class = "btns" id = "class">Классы</div></li>
                 </ul>
             </div>
-            <div class = "btns">Прочее</div>
+            <div class = "btns">Отчеты</div>
         </div>
     </div>
     <div id = "main">
         <div id = "maindata" style="height: 90%; overflow: auto;">
-            <div class = "data" id = "pupil" style = "display: none;"></div>
-            <div class = "data" id = "staff" style = "display: none;"></div>
-            <div class = "data" id = "Sbooks" style = "display: none;"></div>
-            <div class = "data" id = "books" style = "display: none;"></div>
-            <div class = "data" id = "class" style = "display: none;"></div>
-            <div class = "data" id = "TakeHistory" style = "display: none;"></div>
+            <div class = "data" id = "pupil" style = "display: none;">Ученики</div>
+            <div class = "data" id = "staff" style = "display: none;">Сотрудники</div>
+            <div class = "data" id = "Sbooks" style = "display: none;">Учебники</div>
+            <div class = "data" id = "books" style = "display: none;">Книги</div>
+            <div class = "data" id = "class" style = "display: none;">Классы</div>
         </div>
-        <div id = "pages">
+        <div id = "pages" style="height: 5%; overflow: auto;">
             <div class = "pages" id = "pupil" style = "display: none;"></div>
             <div class = "pages" id = "staff" style = "display: none;"></div>
             <div class = "pages" id = "Sbooks" style = "display: none;"></div>
@@ -39,6 +37,7 @@
         </div>
     </div>
 </body>
+<script src="jsQR.js"></script>
 <script src = "index.js"></script>
 <link href = "style.css" rel="stylesheet" type="text/css"></style>
 </html>

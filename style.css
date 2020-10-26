@@ -1,6 +1,15 @@
 #header {
     text-align: center;
 }
+.tablehead {
+    background-color: #888;
+    color: white;
+  }
+.table {
+    display: inline-block;
+    border: solid 1px black; 
+    padding: 2px;
+}
 nav {
     width: 660px;
     margin: 0 auto 30px;
@@ -21,7 +30,7 @@ ul {
 .topmenu li:hover {
     cursor: pointer;
 }
-.table:hover {
+.tables:hover {
     background-color: black;
     color: white;
 }
@@ -44,6 +53,7 @@ a {
     -moz-transition: 0.5s ease-in-out;
     -o-transition: 0.5s ease-in-out;
     transition: 0.5s ease-in-out;
+    background-color: white;
 }
 #menu .submenu {
     display: none;
