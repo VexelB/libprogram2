@@ -3,10 +3,44 @@
     <title>Hello</title>
 </head>
 <body>
+    <div id="load">
+         Загрузка
+    </div>
+    <div id="onload" style="display: none;">
+        <div id="myModal1" class="modal">
+            <div class = "modal-content">
+              <button id="addclose">Ок</button>
+              <button id="close">Отмена</button><br>
+              <div id = "divvideo" style = "display: none">
+                <div id="loadingMessage">🎥 Unable to access video stream (please make sure you have a webcam enabled)</div>
+                <canvas id="canvas" hidden></canvas>
+                <div id="output" hidden>
+                  <div id="outputMessage">No QR code detected.</div>
+                  <div hidden><b>Data:</b> <span id="outputData"></span></div>
+                </div>
+              </div>
+              <div id="data1"></div>
+            </div>
+        </div>
+        <div id="myModal2" class="modal">
+            <div class = "modal-content">
+              <button id="addclose">Ок</button>
+              <button id="close">Отмена</button><br>
+              <div id = "divvideo" style = "display: none">
+                <div id="loadingMessage">🎥 Unable to access video stream (please make sure you have a webcam enabled)</div>
+                <canvas id="canvas" hidden></canvas>
+                <div id="output" hidden>
+                  <div id="outputMessage">No QR code detected.</div>
+                  <div hidden><b>Data:</b> <span id="outputData"></span></div>
+                </div>
+              </div>
+              <div id="data1"></div>
+            </div>
+        </div>
     Школьная библиотка v0.5
     <div id = "header">
         <div id="menu">
-            <div id = "" class = "btns">Выдача/Прием книг</div>
+            <div id = "take/give" class = "btns">Выдача/Прием книг</div>
             <div id = "tables" class = "btns">Таблицы
                 <ul class="submenu">
                     <li class = "tables"><div class = "btns" id = "pupil">Ученики</div></li>
@@ -17,7 +51,16 @@
                 </ul>
             </div>
             <div class = "btns">Отчеты</div>
+            <input id="search" placeholder="Поиск">
+            <div id = "shapbtns" style="display: none;">
+                <button id ="addbtn">Добавить</button>
+                <button id ="chgbtn">Изменить</button>
+                <button id ="delbtn">Удалить</button>
+            </div>
         </div>
+    </div>
+    <div id = "divsearch" style="display: none;">
+        Поиск
     </div>
     <div id = "main">
         <div id = "maindata" style="height: 90%; overflow: auto;">
@@ -35,6 +78,7 @@
             <div class = "pages" id = "class" style = "display: none;"></div>
             <div class = "pages" id = "TakeHistory" style = "display: none;"></div>
         </div>
+    </div>
     </div>
 </body>
 <script src="jsQR.js"></script>
