@@ -1,5 +1,5 @@
 // init
-const ws = new WebSocket ("ws://localhost:5354")
+const ws = new WebSocket ("ws://192.168.1.15:5354")
 let reqbody = {};
 let assoc = {}
 let table = ''
@@ -43,15 +43,19 @@ let put = (x, y) => {
 }
 
 // body
-setTimeout(() => {get('pupil')}, 1000)
-setTimeout(() => {get('staff')}, 1000)
-setTimeout(() => {get('Sbooks')}, 1000)
-setTimeout(() => {get('books')}, 100)
-setTimeout(() => {get('class')}, 100)
-setTimeout(() => {
-    document.getElementById("load").style.display = "none";
-    document.getElementById("onload").style.display = "block";
-}, 5000);
+ws.onopen = () => {
+    setTimeout(() => {get('pupil')}, 1000)
+    setTimeout(() => {get('staff')}, 1000)
+    setTimeout(() => {get('Sbooks')}, 1000)
+    setTimeout(() => {get('books')}, 100)
+    setTimeout(() => {get('class')}, 100)
+    setTimeout(() => {
+        document.getElementById("load").style.display = "none";
+        document.getElementById("onload").style.display = "block";
+        // get('TakeHistory')
+    }, 1000);
+};
+
 
 ws.onmessage = (d) => {
     let data = JSON.parse(d.data)
@@ -61,10 +65,6 @@ ws.onmessage = (d) => {
         }
     }
     if (data.action == "rows") {
-        // document.querySelector(`#pages #${data.table}`).innerHTML = '';
-        // document.querySelectorAll(`#maindata #${data.table}`).forEach((x) => {
-        //     x.innerHTML = '';
-        // })
         fields[data.table] = []
         for (let i in data.content[0]) {
             fields[data.table].push(i);
@@ -78,6 +78,9 @@ ws.onmessage = (d) => {
             }
             for (let j = 0; j < 50; j++) {
                 if (data.content[j+50*(i-1)] != undefined)
+                if (data.table == 'pupil') {
+                    document.querySelector('#optionspupil').innerHTML += `<option>${data.content[j+50*(i-1)].FIO}</option>`
+                }
                 {
                     for (let q in data.content[j+50*(i-1)]) {
                         if (q == 'bibl') {
