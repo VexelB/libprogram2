@@ -46,9 +46,13 @@ wss.on('connection', (ws, req) => {
     });
     db.serialize(() => {
         db.all(`select * from assoc`, (err,rows) => {
-            ws.send(JSON.stringify({action: "init", content: rows}))
+            ws.send(JSON.stringify({action: "assoc", content: rows}))
+        })
+        db.all(`select * from datas`, (err, rows) => {
+            ws.send(JSON.stringify({action: "datas", content: rows}))
         })
     })
+    db.close();
     ws.on('message', (d) => {
         d = JSON.parse(d)
         if (d.action == "get") {
@@ -62,8 +66,9 @@ wss.on('connection', (ws, req) => {
                     ws.send(JSON.stringify({action: "rows", content: rows, table: d.table}))
                 })
             })
+            db.close();
         }
-        if (d.action == "pupilduty") {
+        else if (d.action == "pupilduty") {
             let db = new sqlite3.Database('sqlite.db', sqlite3.OPEN_READWRITE, (err) => {
                 if (err) {
                   console.error(err.message);
@@ -74,6 +79,32 @@ wss.on('connection', (ws, req) => {
                     ws.send(JSON.stringify({action: d.action, content: rows, table: d.table}))
                 })
             })
+            db.close();
+        }
+        else if (d.action == "put") {
+            let db = new sqlite3.Database('sqlite.db', sqlite3.OPEN_READWRITE, (err) => {
+                if (err) {
+                  console.error(err.message);
+                }
+            });
+            db.run(d.sql);
+            db.close();
+        }
+        else if (d.action == "book") {
+            let db = new sqlite3.Database('sqlite.db', sqlite3.OPEN_READWRITE, (err) => {
+                if (err) {
+                  console.error(err.message);
+                }
+            });
+            db.serialize(() => {
+                db.get(`select * from books where invid = ${d.invid}`, (err, row) => {
+                    if (row.own == '0') {
+                        db.run(`update books set own = "1" where invid = "${row.invid}"`);
+                        // db.run(`insert into TakeHistory values ()`)
+                    }
+                })
+            })
+            db.close();
         }
     })
 })

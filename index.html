@@ -8,33 +8,41 @@
     </div>
     <div id="onload" style="display: none;">
         <div id="myModal1" class="modal">
-            <div class = "modal-content">
-                <button id="next">Далее</button>
-                <button id="close">Отмена</button><br>
-                <div>
-                    <input placeholder="Ученик" list = "optionspupil" id = "inputpupil">
-                    <datalist id = "optionspupil">
-                    </datalist>
+            <div class = "modal-content" style="display: flex;">
+                <div style="width: 40%;">
+                    <button id="next">Ок</button>
+                    <button id="close">Отмена</button><br>
+                    <div>
+                        <input placeholder="Ученик" list = "optionspupil" id = "inputpupil">
+                        <datalist id = "optionspupil">
+                        </datalist>
+                    </div>
+                    <div id = "duty">
+                        Ничего не должен
+                    </div>
                 </div>
-                <div id = "duty" style="display: none;">
-                    ku
+                <div id = "divvideo" style="width: 30%;">
+                    <div id="loadingMessage">🎥 Unable to access video stream (please make sure you have a webcam enabled)</div>
+                    <canvas id="canvas" hidden></canvas>
+                    <div id="output" hidden>
+                    <div id="outputMessage">No QR code detected.</div>
+                    <div hidden><b>Data:</b> <span id="outputData"></span></div>
+                    </div>
                 </div>
-              <!-- <div id = "divvideo" style = "display: none">
-                <div id="loadingMessage">🎥 Unable to access video stream (please make sure you have a webcam enabled)</div>
-                <canvas id="canvas" hidden></canvas>
-                <div id="output" hidden>
-                  <div id="outputMessage">No QR code detected.</div>
-                  <div hidden><b>Data:</b> <span id="outputData"></span></div>
-                </div>
-              </div>
-              <div id="data1"></div> -->
+                <div id="data1"></div>
             </div>
         </div>
         <div id="myModal2" class="modal">
             <div class = "modal-content">
-              <button id="addclose">Ок</button>
-              <button id="close">Отмена</button><br>
-              <div id="data1"></div>
+                <div>
+                    <button id="addclose">Ок</button>
+                    <button id="close">Отмена</button><br>
+                    <div id="data1"></div>
+                    <div style="display: none;">
+                        <button id ="chgbtn">Изменить</button>
+                        <button id ="delbtn">Удалить</button>
+                    </div>
+                </div>
             </div>
         </div>
     Школьная библиотка v0.5
@@ -54,8 +62,6 @@
             <input id="search" placeholder="Поиск">
             <div id = "shapbtns" style="display: none;">
                 <button id ="addbtn">Добавить</button>
-                <button id ="chgbtn">Изменить</button>
-                <button id ="delbtn">Удалить</button>
             </div>
         </div>
     </div>
