@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Hello</title>
+    <title>Library</title>
 </head>
 <body>
     <div id="load">
@@ -9,15 +9,15 @@
     <div id="onload" style="display: none;">
         <div id="myModal1" class="modal">
             <div class = "modal-content">
-                <button id="addclose" style="display: none;">Ок</button>
+                <button id="next">Далее</button>
                 <button id="close">Отмена</button><br>
                 <div>
                     <input placeholder="Ученик" list = "optionspupil" id = "inputpupil">
                     <datalist id = "optionspupil">
                     </datalist>
                 </div>
-                <div id = "duty">
-                    
+                <div id = "duty" style="display: none;">
+                    ku
                 </div>
               <!-- <div id = "divvideo" style = "display: none">
                 <div id="loadingMessage">🎥 Unable to access video stream (please make sure you have a webcam enabled)</div>
@@ -34,21 +34,13 @@
             <div class = "modal-content">
               <button id="addclose">Ок</button>
               <button id="close">Отмена</button><br>
-              <div id = "divvideo" style = "display: none">
-                <div id="loadingMessage">🎥 Unable to access video stream (please make sure you have a webcam enabled)</div>
-                <canvas id="canvas" hidden></canvas>
-                <div id="output" hidden>
-                  <div id="outputMessage">No QR code detected.</div>
-                  <div hidden><b>Data:</b> <span id="outputData"></span></div>
-                </div>
-              </div>
               <div id="data1"></div>
             </div>
         </div>
     Школьная библиотка v0.5
     <div id = "header">
         <div id="menu">
-            <div id = "take/give" class = "btns">Выдача/Прием книг</div>
+            <div id = "takegive" class = "btns">Выдача/Прием книг</div>
             <div id = "tables" class = "btns">Таблицы
                 <ul class="submenu">
                     <li class = "tables"><div class = "btns" id = "pupil">Ученики</div></li>

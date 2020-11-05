@@ -6,7 +6,7 @@ let table = ''
 fields = {}
 document.querySelectorAll('.tables').forEach((x) => {
     x.addEventListener('click', (x) => {
-        document.getElementById('shapbtns').style.display = "inline-block";
+        document.querySelector('#shapbtns').style.display = "inline-block";
         table = x.target.id;
         document.querySelectorAll('.data').forEach((e) => {
             if (e.id == x.target.id) {
@@ -35,12 +35,6 @@ let get = (x) => {
     reqbody.sql = `select * from ${x}`;
     ws.send(JSON.stringify(reqbody))
 }
-let put = (x, y) => {
-    reqbody.action = 'put';
-    reqbody.table = x;
-    reqbody.sql = ``;
-    ws.send(JSON.stringify(reqbody))
-}
 
 // body
 ws.onopen = () => {
@@ -50,8 +44,8 @@ ws.onopen = () => {
     setTimeout(() => {get('books')}, 100)
     setTimeout(() => {get('class')}, 100)
     setTimeout(() => {
-        document.getElementById("load").style.display = "none";
-        document.getElementById("onload").style.display = "block";
+        document.querySelector("#load").style.display = "none";
+        document.querySelector("#onload").style.display = "block";
         // get('TakeHistory')
     }, 1000);
 };
@@ -109,30 +103,58 @@ ws.onmessage = (d) => {
             })
         })
     }
+    if (data.action == 'pupilduty') {
+        console.log(data)
+    }
 };
 
-document.getElementById('search').addEventListener('input', (x) => {
+document.querySelector('#search').addEventListener('input', (x) => {
     if (x.target.value == '') {
-        document.getElementById('main').style.display = "block";
-        document.getElementById('divsearch').style.display = "none"
+        document.querySelector('#main').style.display = "block";
+        document.querySelector('#divsearch').style.display = "none"
     }
     else {
-        document.getElementById('main').style.display = "none";
-        document.getElementById('divsearch').style.display = "block"
+        document.querySelector('#main').style.display = "none";
+        document.querySelector('#divsearch').style.display = "block"
     }
 })
 
-document.getElementById('take/give').addEventListener('click', () => {
-    document.getElementById('myModal1').style.display = "block";
+document.querySelector('#takegive').addEventListener('click', () => {
+    document.querySelector('#myModal1').style.display = "block";
 })
 document.querySelectorAll('#addclose').forEach((x) => {
     x.addEventListener('click', () => {
-        
         x.parentNode.parentNode.style.display = "none"
+        reqbody.fields[table] = {}
+        document.querySelectorAll('#data1 div').forEach((x) => {
+            console.log(x.childNodes[1].value);
+            reqbody.fields[table][x.id.slice(3)] = x.childNodes[1].value
+        })
     })
 })
 document.querySelectorAll('#close').forEach((x) => {
     x.addEventListener('click', () => {
         x.parentNode.parentNode.style.display = "none"
     })
+})
+document.querySelector('#inputpupil').addEventListener('change', (x) => {
+    reqbody.action = "pupilduty";
+    reqbody.pupil = x.target.value;
+    reqbody.sql = `SELECT books.invid, books.name FROM TakeHistory Left join books ON books.invid = TakeHistory.invid WHERE TakeHistory.who = '${reqbody.pupil}'`
+    ws.send(JSON.stringify(reqbody))
+})
+document.querySelector('#next').addEventListener('click', () => {
+    if (document.querySelector('#duty').style.display == "none") {
+        document.querySelector('#duty').style.display = "block"
+    }
+    else {
+
+    }
+})
+document.querySelector("#addbtn").addEventListener('click', () => {
+    document.querySelector('#myModal2 #data1').innerHTML = ''
+    for (let i in fields[table]) {
+        document.querySelector('#myModal2 #data1').innerHTML += `<div id="div${fields[table][i]}">${assoc[fields[table][i]]}: <input id = "input${fields[table][i]}" value=""></div>`;
+    }
+    document.querySelector('#myModal2').style.display = "block"
 })

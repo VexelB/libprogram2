@@ -63,5 +63,17 @@ wss.on('connection', (ws, req) => {
                 })
             })
         }
+        if (d.action == "pupilduty") {
+            let db = new sqlite3.Database('sqlite.db', sqlite3.OPEN_READWRITE, (err) => {
+                if (err) {
+                  console.error(err.message);
+                }
+            });
+            db.serialize(() => {
+                db.all(d.sql, (err,rows) => {
+                    ws.send(JSON.stringify({action: d.action, content: rows, table: d.table}))
+                })
+            })
+        }
     })
 })
