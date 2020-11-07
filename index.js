@@ -1,14 +1,19 @@
 // init
-const ws = new WebSocket ("ws://localhost:5354")
+const ws = new WebSocket ("ws://192.168.1.15:5354")
 let reqbody = {};
 let assoc = {};
 let datas = [];
 let table = '';
 let amounts = {};
 let fields = {};
-let video = document.createElement("video");
+let video;
+let head = {};
+let duty = [];
 document.querySelectorAll('.tables').forEach((x) => {
     x.addEventListener('click', (x) => {
+        // if (x.target.id != 'books' && x.target.id != 'staff' && x.target.id != 'Sbooks') {
+        //     get(x.target.id);
+        // }
         document.querySelector('#shapbtns').style.display = "inline-block";
         table = x.target.id;
         document.querySelectorAll('.data').forEach((e) => {
@@ -52,15 +57,37 @@ let put = () => {
 
 // body
 ws.onopen = () => {
-    setTimeout(() => {get('pupil')}, 1000)
-    setTimeout(() => {get('staff')}, 1000)
-    setTimeout(() => {get('Sbooks')}, 1000)
-    setTimeout(() => {get('books')}, 100)
-    setTimeout(() => {get('class')}, 100)
+    // setTimeout(() => {get('pupil')}, 1000)
+    // setTimeout(() => {get('staff')}, 1000)
+    // setTimeout(() => {get('Sbooks')}, 1000)
+    // setTimeout(() => {get('books')}, 100)
+    // setTimeout(() => {get('class')}, 100)
     setTimeout(() => {
         document.querySelector("#load").style.display = "none";
         document.querySelector("#onload").style.display = "block";
+        document.querySelectorAll('.row').forEach((x) => {
+            x.addEventListener('click', () => {
+                let temp = document.querySelectorAll(`#${x.parentNode.parentNode.parentNode.id} #${x.id}`)
+                head.fields = {}
+                for (let i in temp) {
+                    if (temp[i].parentNode) {
+                        head.fields[fields[temp[i].parentNode.parentNode.parentNode.id][i]] = temp[i].innerText
+                    }   
+                }
+                document.querySelector('#myModal2 #data1').innerHTML = ''
+                for (let i in fields[table]) {
+                    document.querySelector('#myModal2 #data1').innerHTML += `<div id="div${fields[table][i]}">${assoc[fields[table][i]]}: <input id = "input${fields[table][i]}" value="${head.fields[fields[table][i]]}"></div>`;
+                }
+                document.querySelector('#myModal2').style.display = "block";
+                document.querySelector('#foot').style.display = "block";
+            })
+        })
     }, 1000);
+    get('class')
+    get('books')
+    get('Sbooks')
+    get('staff')
+    get('pupil')
 };
 
 
@@ -83,11 +110,13 @@ ws.onmessage = (d) => {
         for (let i in data.content[0]) {
             fields[data.table].push(i);
         }
+        document.querySelector(`#pages #${data.table}`).innerHTML = ``;
+        document.querySelector(`#maindata #${data.table}`).innerHTML = ``;
         for (let i = 1; i <= Math.ceil(data.content.length / 50); i++) {
             document.querySelector(`#pages #${data.table}`).innerHTML += `<div class = "page" id = "page${i}">${i}</div>`;
             document.querySelector(`#maindata #${data.table}`).innerHTML += `<div class = "data" id = "page${i}" style="display:none"></div>`;
             for (let j in data.content[0]) {
-                document.querySelector(`#maindata #${data.table} #page${i}`).innerHTML += `<div class = "table" id="${j}"><div class = "tablehead">${assoc[j]}</div></div>`
+                document.querySelector(`#maindata #${data.table} #page${i}`).innerHTML += `<div class = "table" id="${data.table}${j}"><div class = "tablehead">${assoc[j]}</div></div>`
                 
             }
             for (let j = 0; j < 50; j++) {
@@ -98,10 +127,10 @@ ws.onmessage = (d) => {
                 {
                     for (let q in data.content[j+50*(i-1)]) {
                         if (q == 'bibl') {
-                            document.querySelector(`#maindata #page${i} #${q}`).innerHTML += `<div class="row" id="row${data.content[j+50*(i-1)].id}">><div style="display:none;">${data.content[j+50*(i-1)][q]}</div></div>  `;
+                            document.querySelector(`#maindata #page${i} #${data.table}${q}`).innerHTML += `<div class="row" id="row${data.content[j+50*(i-1)].id}">><div style="display:none;">${data.content[j+50*(i-1)][q]}</div></div>  `;
                         }
                         else {
-                            document.querySelector(`#maindata #page${i} #${q}`).innerHTML += `<div class="row" id="row${data.content[j+50*(i-1)].id}">${data.content[j+50*(i-1)][q]}</div>  `
+                            document.querySelector(`#maindata #page${i} #${data.table}${q}`).innerHTML += `<div class="row" id="row${data.content[j+50*(i-1)].id}">${data.content[j+50*(i-1)][q]}</div>  `
                         }
                         amounts[data.table] = data.content[j+50*(i-1)].id;
                     }
@@ -124,6 +153,7 @@ ws.onmessage = (d) => {
         })
     }
     if (data.action == 'pupilduty') {
+        duty = [];
         if (data.content.length == 0) {
             document.querySelector('#duty').innerHTML = 'Ничего не должен'    
         } else {
@@ -136,6 +166,7 @@ ws.onmessage = (d) => {
             for (let q in data.content[i]) {
                 document.querySelector(`#duty #${q}`).innerHTML += `<div class="row" id="row${data.content[i].invid}">${data.content[i][q]}</div>  `
             }
+            duty.push(data.content[i].invid)
         }
     }
 };
@@ -153,6 +184,7 @@ document.querySelector('#search').addEventListener('input', (x) => {
 
 document.querySelector('#takegive').addEventListener('click', () => {
     document.querySelector('#myModal1').style.display = "block";
+    video = document.createElement("video")
     const canvasElement = document.getElementById("canvas");
     const canvas = canvasElement.getContext("2d");
     const loadingMessage = document.getElementById("loadingMessage");
@@ -211,8 +243,13 @@ document.querySelector('#takegive').addEventListener('click', () => {
                 if (document.querySelector('#myModal1').style.display = "block") {
                     if (document.querySelector('#inputpupil').value != '') {
                         reqbody.action = "book";
+                        if (duty.includes(code.data)){
+                            reqbody.subaction = "take"
+                        }
                         reqbody.invid = code.data;
+                        reqbody.pupil = document.querySelector('#inputpupil').value;
                         ws.send(JSON.stringify(reqbody));
+                        alert('Запись отправлена')
                     }
                 }
             } else {
@@ -242,6 +279,7 @@ document.querySelectorAll('#close').forEach((x) => {
         x.parentNode.parentNode.parentNode.style.display = "none";
         video.srcObject.getTracks().forEach((track) => {
             track.stop();
+            document.getElementById("loadingMessage").hidden = false;
         })
     })
 })
@@ -265,8 +303,3 @@ document.querySelector("#addbtn").addEventListener('click', () => {
     }
     document.querySelector('#myModal2').style.display = "block"
 })
-
-
-
-
-// qrcamera
