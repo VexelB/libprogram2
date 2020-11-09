@@ -4,8 +4,12 @@ const fs = require('fs');
 const https = require('https')
 const path = require("path")
 const sqlite3 = require("sqlite3")
-const { Server } = require('ws');
-const wss = new Server({ port: 5354 });
+const WebSocket = require( "ws");
+const server = https.createServer({
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+}, app)
+const wss = new WebSocket.Server({ server });
 const password = 'random';
 let clients = [];
 
@@ -143,10 +147,6 @@ wss.on('connection', (ws, req) => {
         }
     })
 })
-https.createServer({
-    key: fs.readFileSync('server.key'),
-    cert: fs.readFileSync('server.cert')
-}, app)
-.listen(5353, function () {
+server.listen(5353, function () {
     console.log('Example app listening on port 3000! Go to https://192.168.1.2:5353/')
 })

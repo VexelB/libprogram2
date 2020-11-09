@@ -47,7 +47,7 @@ let update = () => {
 }
 
 // init
-const ws = new WebSocket ("ws://192.168.1.2:5354")
+const ws = new WebSocket ("wss://192.168.1.2:5353")
 let reqbody = {};
 let assoc = {};
 let datas = [];
