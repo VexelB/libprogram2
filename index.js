@@ -1,29 +1,22 @@
 //functions
 let init = () => {
-    document.querySelectorAll('.tables').forEach((x) => {
-        x.addEventListener('click', (x) => {
-            // if (x.target.id != 'books' && x.target.id != 'staff' && x.target.id != 'Sbooks') {
-            //     get(x.target.id);
-            // }
-            document.querySelector('#shapbtns').style.display = "inline-block";
-            table = x.target.id;
-            document.querySelectorAll('.data').forEach((e) => {
-                if (e.id == x.target.id) {
-                    e.style.display = 'block'
+    document.querySelectorAll('.row').forEach((x) => {
+        x.addEventListener('click', () => {
+            let temp = document.querySelectorAll(`#${x.parentNode.parentNode.parentNode.id} #${x.id}`)
+            head.fields = {}
+            for (let i in temp) {
+                if (temp[i].parentNode) {
+                    head.fields[fields[temp[i].parentNode.parentNode.parentNode.id][i]] = temp[i].innerText
+                }   
+            }
+            document.querySelector('#myModal3 #data3').innerHTML = ''
+            for (let i in fields[table]) {
+                document.querySelector('#myModal3 #data3').innerHTML += `<div id="div${fields[table][i]}">${assoc[fields[table][i]]}: <input id = "input${fields[table][i]}" value="${head.fields[fields[table][i]]}"></div>`;
+                if (fields[table][i] == 'id') {
+                    reqbody.oldid = head.fields[fields[table][i]];
                 }
-                else {
-                    e.style.display = "none"
-                }
-            })
-            document.querySelectorAll('.pages').forEach((e) => {
-                if (e.id == x.target.id) {
-                    e.style.display = 'block'
-                }
-                else {
-                    e.style.display = "none"
-                }
-            })
-            document.querySelector(`#maindata #${x.target.id} div`).style.display = "block"
+            }
+            document.querySelector('#myModal3').style.display = "block";
         })
     })
 }
@@ -35,21 +28,22 @@ let get = (x) => {
 }
 
 let put = () => {
-    reqbody.action = "put";
-    reqbody.table = table;
-    reqbody.sql = `INSERT into ${table} values (`
-    for (let i in reqbody.fields) {
-        reqbody.sql += `'${reqbody.fields[i]}',`
-    }
-    reqbody.sql = reqbody.sql.slice(0,reqbody.sql.length-1) + ');'
-    console.log(reqbody.sql);
-    ws.send(JSON.stringify(reqbody))
+    
 }
 let dutytake = () => {
     reqbody.action = "pupilduty";
     reqbody.pupil = document.querySelector('#inputpupil').value;
     reqbody.sql = `SELECT invid, name, qwhen FROM TakeHistory WHERE pupil = '${reqbody.pupil}' and return = '-'`
     ws.send(JSON.stringify(reqbody))
+}
+let update = () => {
+    setTimeout(() => {
+        get(table);
+        setTimeout(() => {
+            document.querySelector(`#maindata #${table}`).firstChild.style.display = 'block';
+            init();
+        }, 500);
+    }, 500);
 }
 
 // init
@@ -65,6 +59,32 @@ let head = {};
 let duty = [];
 let oldcode = { data: ''};
 init();
+document.querySelectorAll('.tables').forEach((x) => {
+    x.addEventListener('click', (x) => {
+        // if (x.target.id != 'books' && x.target.id != 'staff' && x.target.id != 'Sbooks') {
+        //     get(x.target.id);
+        // }
+        document.querySelector('#shapbtns').style.display = "inline-block";
+        table = x.target.id;
+        document.querySelectorAll('.data').forEach((e) => {
+            if (e.id == x.target.id) {
+                e.style.display = 'block'
+            }
+            else {
+                e.style.display = "none"
+            }
+        })
+        document.querySelectorAll('.pages').forEach((e) => {
+            if (e.id == x.target.id) {
+                e.style.display = 'block'
+            }
+            else {
+                e.style.display = "none"
+            }
+        })
+        document.querySelector(`#maindata #${x.target.id} div`).style.display = "block"
+    })
+})
 
 // body
 ws.onopen = () => {
@@ -76,22 +96,7 @@ ws.onopen = () => {
     setTimeout(() => {
         document.querySelector("#load").style.display = "none";
         document.querySelector("#onload").style.display = "block";
-        document.querySelectorAll('.row').forEach((x) => {
-            x.addEventListener('click', () => {
-                let temp = document.querySelectorAll(`#${x.parentNode.parentNode.parentNode.id} #${x.id}`)
-                head.fields = {}
-                for (let i in temp) {
-                    if (temp[i].parentNode) {
-                        head.fields[fields[temp[i].parentNode.parentNode.parentNode.id][i]] = temp[i].innerText
-                    }   
-                }
-                document.querySelector('#myModal3 #data1').innerHTML = ''
-                for (let i in fields[table]) {
-                    document.querySelector('#myModal3 #data1').innerHTML += `<div id="div${fields[table][i]}">${assoc[fields[table][i]]}: <input id = "input${fields[table][i]}" value="${head.fields[fields[table][i]]}"></div>`;
-                }
-                document.querySelector('#myModal3').style.display = "block";
-            })
-        })
+        init();
     }, 1000);
     get('class')
     get('books')
@@ -282,20 +287,23 @@ document.querySelectorAll('#addclose').forEach((x) => {
     x.addEventListener('click', () => {
         x.parentNode.parentNode.parentNode.style.display = "none"
         reqbody.fields = {}
-        document.querySelectorAll('#data1 div').forEach((x) => {
+        document.querySelectorAll('#data2 div').forEach((x) => {
             if (x.childNodes[1].value != '') {
                 reqbody.fields[x.id.slice(3)] = x.childNodes[1].value
             } else {
                 reqbody.fields[x.id.slice(3)] = '-'
             }
         })
-        put();
-        setTimeout(() => {
-            get(table);
-            setTimeout(() => {
-                document.querySelector(`#maindata #${table}`).lastChild.style.display = 'block';
-            }, 500);
-        }, 500); 
+        // put();
+        reqbody.action = "put";
+        reqbody.table = table;
+        reqbody.sql = `INSERT into ${table} values (`
+        for (let i in reqbody.fields) {
+        reqbody.sql += `'${reqbody.fields[i]}',`
+        }
+        reqbody.sql = reqbody.sql.slice(0,reqbody.sql.length-1) + ');'
+        ws.send(JSON.stringify(reqbody))
+        update();
     })
 })
 document.querySelectorAll('#close').forEach((x) => {
@@ -316,13 +324,43 @@ document.querySelector('#inputpupil').addEventListener('change', (x) => {
     dutytake();
 })
 document.querySelector("#addbtn").addEventListener('click', () => {
-    document.querySelector('#myModal2 #data1').innerHTML = ''
+    document.querySelector('#myModal2 #data2').innerHTML = ''
     for (let i in fields[table]) {
         if (fields[table][i] == 'id') {
-            document.querySelector('#myModal2 #data1').innerHTML += `<div id="div${fields[table][i]}">${assoc[fields[table][i]]}: <input id = "input${fields[table][i]}" value="${Number(amounts[table])+1}"></div>`;
+            document.querySelector('#myModal2 #data2').innerHTML += `<div id="div${fields[table][i]}">${assoc[fields[table][i]]}: <input id = "input${fields[table][i]}" value="${Number(amounts[table])+1}"></div>`;
         } else {
-            document.querySelector('#myModal2 #data1').innerHTML += `<div id="div${fields[table][i]}">${assoc[fields[table][i]]}: <input id = "input${fields[table][i]}" value=""></div>`;
+            document.querySelector('#myModal2 #data2').innerHTML += `<div id="div${fields[table][i]}">${assoc[fields[table][i]]}: <input id = "input${fields[table][i]}" value=""></div>`;
         }
     }
     document.querySelector('#myModal2').style.display = "block"
+})
+document.querySelector('#delbtn').addEventListener('click', () => {
+    reqbody.action = 'delete';
+    reqbody.delid = document.querySelector('#myModal3 #inputid').value;
+    reqbody.table = table;
+    reqbody.sql = `delete from ${reqbody.table} where id = '${reqbody.delid}'`;
+    reqbody.fields = {};
+    ws.send(JSON.stringify(reqbody));
+    document.querySelector('#myModal3').style.display = 'none';
+    update();
+})
+document.querySelector('#chgbtn').addEventListener('click', () => {
+    reqbody.action = "change";
+    reqbody.table = table;
+    reqbody.fields = {}
+    document.querySelectorAll('#data3 div').forEach((x) => {
+        if (x.childNodes[1].value != '') {
+            reqbody.fields[x.id.slice(3)] = x.childNodes[1].value;
+        } else {
+            reqbody.fields[x.id.slice(3)] = '-';
+        }
+    })
+    reqbody.sql = `update ${reqbody.table} set `;
+    for (let i in reqbody.fields) {
+        reqbody.sql += `${i} = '${reqbody.fields[i]}',`;
+    }
+    reqbody.sql = reqbody.sql.slice(0, reqbody.sql.length-1) + `where id = ${reqbody.oldid}`;
+    ws.send(JSON.stringify(reqbody));
+    document.querySelector('#myModal3').style.display = "none";
+    update();
 })
