@@ -1,5 +1,7 @@
 const express = require("express");
 const app = new express();
+const fs = require('fs');
+const https = require('https')
 const path = require("path")
 const sqlite3 = require("sqlite3")
 const { Server } = require('ws');
@@ -37,7 +39,6 @@ app.post('/*', (req, res) => {
     }
 })
 
-app.listen(5353, () => {})
 wss.on('connection', (ws, req) => {
     let db = new sqlite3.Database('sqlite.db', sqlite3.OPEN_READWRITE, (err) => {
         if (err) {
@@ -141,4 +142,11 @@ wss.on('connection', (ws, req) => {
             db.close();
         }
     })
+})
+https.createServer({
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+}, app)
+.listen(5353, function () {
+    console.log('Example app listening on port 3000! Go to https://localhost:3000/')
 })
