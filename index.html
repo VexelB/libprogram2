@@ -10,8 +10,7 @@
         <div id="myModal1" class="modal">
             <div class = "modal-content" style="display: flex;">
                 <div style="width: 40%;">
-                    <button id="next">Ок</button>
-                    <button id="close">Отмена</button><br>
+                    <button id="close">Закрыть</button><br>
                     <div>
                         <input placeholder="Ученик" list = "optionspupil" id = "inputpupil">
                         <datalist id = "optionspupil">
@@ -33,10 +32,18 @@
         <div id="myModal2" class="modal">
             <div class = "modal-content">
                 <div>
-                    <button id="addclose">Ок</button>
+                    <button id="addclose">Добавить</button>
                     <button id="close">Отмена</button><br>
                     <div id="data1"></div>
-                    <div id="foot" style="display: none;">
+                </div>
+            </div>
+        </div>
+        <div id="myModal3" class="modal">
+            <div class = "modal-content">
+                <div>
+                    <button id="close">Закрыть</button><br>
+                    <div id="data1"></div>
+                    <div id="foot">
                         <button id ="chgbtn">Изменить</button>
                         <button id ="delbtn">Удалить</button>
                     </div>
@@ -54,6 +61,7 @@
                     <li class = "tables"><div class = "btns" id = "Sbooks">Учебники</div></li>
                     <li class = "tables"><div class = "btns" id = "books">Книги</div></li>
                     <li class = "tables"><div class = "btns" id = "class">Классы</div></li>
+                    <li class = "tables"><div class = "btns" id = "TakeHistory">Выдача книг</div></li>
                 </ul>
             </div>
             <div class = "btns">Отчеты</div>
@@ -73,6 +81,7 @@
             <div class = "data" id = "Sbooks" style = "display: none;">Учебники</div>
             <div class = "data" id = "books" style = "display: none;">Книги</div>
             <div class = "data" id = "class" style = "display: none;">Классы</div>
+            <div class = "data" id = "TakeHistory" style = "display: none;">Выдача книг</div>
         </div>
         <div id = "pages" style="height: 5%; overflow: auto;">
             <div class = "pages" id = "pupil" style = "display: none;"></div>

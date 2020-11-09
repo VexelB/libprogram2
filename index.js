@@ -1,42 +1,32 @@
-// init
-const ws = new WebSocket ("ws://192.168.1.15:5354")
-let reqbody = {};
-let assoc = {};
-let datas = [];
-let table = '';
-let amounts = {};
-let fields = {};
-let video;
-let head = {};
-let duty = [];
-document.querySelectorAll('.tables').forEach((x) => {
-    x.addEventListener('click', (x) => {
-        // if (x.target.id != 'books' && x.target.id != 'staff' && x.target.id != 'Sbooks') {
-        //     get(x.target.id);
-        // }
-        document.querySelector('#shapbtns').style.display = "inline-block";
-        table = x.target.id;
-        document.querySelectorAll('.data').forEach((e) => {
-            if (e.id == x.target.id) {
-                e.style.display = 'block'
-            }
-            else {
-                e.style.display = "none"
-            }
-        })
-        document.querySelectorAll('.pages').forEach((e) => {
-            if (e.id == x.target.id) {
-                e.style.display = 'block'
-            }
-            else {
-                e.style.display = "none"
-            }
-        })
-        document.querySelector(`#maindata #${x.target.id} div`).style.display = "block"
-    })
-})
-
 //functions
+let init = () => {
+    document.querySelectorAll('.tables').forEach((x) => {
+        x.addEventListener('click', (x) => {
+            // if (x.target.id != 'books' && x.target.id != 'staff' && x.target.id != 'Sbooks') {
+            //     get(x.target.id);
+            // }
+            document.querySelector('#shapbtns').style.display = "inline-block";
+            table = x.target.id;
+            document.querySelectorAll('.data').forEach((e) => {
+                if (e.id == x.target.id) {
+                    e.style.display = 'block'
+                }
+                else {
+                    e.style.display = "none"
+                }
+            })
+            document.querySelectorAll('.pages').forEach((e) => {
+                if (e.id == x.target.id) {
+                    e.style.display = 'block'
+                }
+                else {
+                    e.style.display = "none"
+                }
+            })
+            document.querySelector(`#maindata #${x.target.id} div`).style.display = "block"
+        })
+    })
+}
 let get = (x) => {
     reqbody.action = "get";
     reqbody.table = x;
@@ -52,8 +42,29 @@ let put = () => {
         reqbody.sql += `'${reqbody.fields[i]}',`
     }
     reqbody.sql = reqbody.sql.slice(0,reqbody.sql.length-1) + ');'
+    console.log(reqbody.sql);
     ws.send(JSON.stringify(reqbody))
 }
+let dutytake = () => {
+    reqbody.action = "pupilduty";
+    reqbody.pupil = document.querySelector('#inputpupil').value;
+    reqbody.sql = `SELECT invid, name, qwhen FROM TakeHistory WHERE pupil = '${reqbody.pupil}' and return = '-'`
+    ws.send(JSON.stringify(reqbody))
+}
+
+// init
+const ws = new WebSocket ("ws://localhost:5354")
+let reqbody = {};
+let assoc = {};
+let datas = [];
+let table = '';
+let amounts = {};
+let fields = {};
+let video;
+let head = {};
+let duty = [];
+let oldcode = { data: ''};
+init();
 
 // body
 ws.onopen = () => {
@@ -74,12 +85,11 @@ ws.onopen = () => {
                         head.fields[fields[temp[i].parentNode.parentNode.parentNode.id][i]] = temp[i].innerText
                     }   
                 }
-                document.querySelector('#myModal2 #data1').innerHTML = ''
+                document.querySelector('#myModal3 #data1').innerHTML = ''
                 for (let i in fields[table]) {
-                    document.querySelector('#myModal2 #data1').innerHTML += `<div id="div${fields[table][i]}">${assoc[fields[table][i]]}: <input id = "input${fields[table][i]}" value="${head.fields[fields[table][i]]}"></div>`;
+                    document.querySelector('#myModal3 #data1').innerHTML += `<div id="div${fields[table][i]}">${assoc[fields[table][i]]}: <input id = "input${fields[table][i]}" value="${head.fields[fields[table][i]]}"></div>`;
                 }
-                document.querySelector('#myModal2').style.display = "block";
-                document.querySelector('#foot').style.display = "block";
+                document.querySelector('#myModal3').style.display = "block";
             })
         })
     }, 1000);
@@ -88,6 +98,7 @@ ws.onopen = () => {
     get('Sbooks')
     get('staff')
     get('pupil')
+    get('TakeHistory')
 };
 
 
@@ -171,7 +182,7 @@ ws.onmessage = (d) => {
     }
 };
 
-document.querySelector('#search').addEventListener('input', (x) => {
+document.querySelector('#search').addEventListener('change', (x) => {
     if (x.target.value == '') {
         document.querySelector('#main').style.display = "block";
         document.querySelector('#divsearch').style.display = "none"
@@ -240,21 +251,28 @@ document.querySelector('#takegive').addEventListener('click', () => {
                     //     }
                     // })
                     // });
-                if (document.querySelector('#myModal1').style.display = "block") {
-                    if (document.querySelector('#inputpupil').value != '') {
-                        reqbody.action = "book";
-                        if (duty.includes(code.data)){
-                            reqbody.subaction = "take"
+                if (oldcode.data != code.data) {
+                    if (document.querySelector('#myModal1').style.display = "block") {
+                        if (document.querySelector('#inputpupil').value != '') {
+                            oldcode = code;
+                            reqbody.action = "book";
+                            if (duty.includes(code.data)){
+                                reqbody.subaction = "take"
+                            }
+                            reqbody.invid = code.data;
+                            reqbody.pupil = document.querySelector('#inputpupil').value;
+                            ws.send(JSON.stringify(reqbody));
+                            alert('Запись отправлена');
+                            dutytake();
+                            get('TakeHistory');
+                        } else {
+                            alert('Введите ученика');
                         }
-                        reqbody.invid = code.data;
-                        reqbody.pupil = document.querySelector('#inputpupil').value;
-                        ws.send(JSON.stringify(reqbody));
-                        alert('Запись отправлена')
                     }
                 }
             } else {
-                outputMessage.hidden = false;
-                outputData.parentElement.hidden = true;
+                // outputMessage.hidden = false;
+                // outputData.parentElement.hidden = true;
             }
         }
         requestAnimationFrame(tick);
@@ -272,25 +290,30 @@ document.querySelectorAll('#addclose').forEach((x) => {
             }
         })
         put();
+        setTimeout(() => {
+            get(table);
+            setTimeout(() => {
+                document.querySelector(`#maindata #${table}`).lastChild.style.display = 'block';
+            }, 500);
+        }, 500); 
     })
 })
 document.querySelectorAll('#close').forEach((x) => {
     x.addEventListener('click', () => {
         x.parentNode.parentNode.parentNode.style.display = "none";
-        video.srcObject.getTracks().forEach((track) => {
-            track.stop();
-            document.getElementById("loadingMessage").hidden = false;
-        })
+        if (video) {
+            video.srcObject.getTracks().forEach((track) => {
+                track.stop();
+                oldcode = {data: ''}
+                document.getElementById("loadingMessage").hidden = false;
+            })
+        }
+        document.querySelector('#inputpupil').value = ''
     })
+
 })
 document.querySelector('#inputpupil').addEventListener('change', (x) => {
-    reqbody.action = "pupilduty";
-    reqbody.pupil = x.target.value;
-    reqbody.sql = `SELECT invid, name FROM TakeHistory WHERE pupil = '${reqbody.pupil}'`
-    ws.send(JSON.stringify(reqbody))
-})
-document.querySelector('#next').addEventListener('click', () => {
-
+    dutytake();
 })
 document.querySelector("#addbtn").addEventListener('click', () => {
     document.querySelector('#myModal2 #data1').innerHTML = ''

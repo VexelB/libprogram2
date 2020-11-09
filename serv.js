@@ -97,14 +97,15 @@ wss.on('connection', (ws, req) => {
                 }
             });
             db.serialize(() => {
-                let d = new Date();
+                let d1 = new Date();
                 if (d.subaction == 'take') {
-                    db.run(`update books set own = "0" where invid = "${d.invid}" and own = '1'`);
-                    db.run(`update TakeHistory set return = '${d.getDate()}.${d.getMonth()+1}.${d.getFullYear()}' where invid = '${d.invid}' and return = '-'`)
+                    db.run(`update books set own = 0 where invid = "${d.invid}" and own = 1`);
+                    db.run(`update TakeHistory set return = '${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()}' where invid = ${d.invid} and return = '-' and pupil = ${d.pupil}`)
                 } else {
-                    let d2 = new Date(Date.parse(d)+1209600033)
-                    db.run(`update books set own = "1" where invid = "${d.invid}" and own = '0'`);
-                    db.run(`INSERT INTO TakeHistory (id,pupil,invid,name,wwhen,qwhen,return) VALUES ((select count (*) from TakeHistory)+1,'${d.pupil}','${d.invid}',(select name from books where invid = '${d.invid}'),'${d.getDate()}.${d.getMonth()+1}.${d.getFullYear()}','${d2.getDate()}.${d2.getMonth()+1}.${d2.getFullYear()}','-');`)
+                    let d2 = new Date(Date.parse(d1)+1209600033)
+                    db.run(`update books set own = 1 where invid = "${d.invid}" and own = 0`);
+                    db.run(`INSERT INTO TakeHistory (id,pupil,invid,name,wwhen,qwhen,return) VALUES ((select count (*) from TakeHistory)+1,'${d.pupil}','${d.invid}',(select name from books where invid = '${d.invid}'),'${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()}','${d2.getDate()}.${d2.getMonth()+1}.${d2.getFullYear()}','-');`)
+                    // console.log(`INSERT INTO TakeHistory (id,pupil,invid,name,wwhen,qwhen,return) VALUES ((select count (*) from TakeHistory)+1,'${d.pupil}','${d.invid}',(select name from books where invid = '${d.invid}'),'${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()}','${d2.getDate()}.${d2.getMonth()+1}.${d2.getFullYear()}','-');`)
                 }
             })
             db.close();
