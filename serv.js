@@ -148,5 +148,5 @@ https.createServer({
     cert: fs.readFileSync('server.cert')
 }, app)
 .listen(5353, function () {
-    console.log('Example app listening on port 3000! Go to https://localhost:3000/')
+    console.log('Example app listening on port 3000! Go to https://192.168.1.2:5353/')
 })
