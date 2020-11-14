@@ -27,9 +27,6 @@ let get = (x) => {
     ws.send(JSON.stringify(reqbody))
 }
 
-let put = () => {
-    
-}
 let dutytake = () => {
     reqbody.action = "pupilduty";
     reqbody.pupil = document.querySelector('#inputpupil').value;
