@@ -2,6 +2,7 @@ const express = require("express");
 const app = new express();
 const fs = require('fs');
 const https = require('https')
+const http = express();
 const path = require("path")
 const sqlite3 = require("sqlite3")
 const WebSocket = require( "ws");
@@ -150,7 +151,7 @@ wss.on('connection', (ws, req) => {
 server.listen(5353, function () {
     console.log('Example app listening on port 3000! Go to https://192.168.1.2:5353/')
 })
-express().get('*', (req,res) => {
+http.get('*', (req,res) => {
     res.redirect('https://' + req.headers.host + req.url);
 })
 .listen(8080);
