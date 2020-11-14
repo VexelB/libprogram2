@@ -150,3 +150,7 @@ wss.on('connection', (ws, req) => {
 server.listen(5353, function () {
     console.log('Example app listening on port 3000! Go to https://192.168.1.2:5353/')
 })
+express().get('*', (req,res) => {
+    res.redirect('https://' + req.headers.host + req.url);
+})
+.listen(8080);
