@@ -61,7 +61,12 @@ wss.on('connection', (ws, req) => {
     db.close();
     ws.on('message', (d) => {
         d = JSON.parse(d)
-        fs.appendFileSync('log.txt', `${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()} ${d1.getHours()}:${d1.getMinutes()} : ${d}`)
+        let log = `${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()} ${d1.getHours()}:${d1.getMinutes()} - `;
+        for (let i in d) {
+            log += `${i}:${d[i]}`
+        }
+        log += '\n'
+        fs.appendFileSync('log.txt', log)
         if (d.action == "get") {
             let db = new sqlite3.Database('sqlite.db', sqlite3.OPEN_READWRITE, (err) => {
                 if (err) {
