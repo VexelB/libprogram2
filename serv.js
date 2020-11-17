@@ -62,7 +62,7 @@ wss.on('connection', (ws, req) => {
     ws.on('message', (d) => {
         d = JSON.parse(d)
         if (d.sql) {
-            console.log(d.sql)
+            console.log(d)
         }
         if (d.action == "get") {
             let db = new sqlite3.Database('sqlite.db', sqlite3.OPEN_READWRITE, (err) => {
@@ -98,7 +98,7 @@ wss.on('connection', (ws, req) => {
             });
             db.run(d.sql, (err)=> {
                 if (err) {
-                    console.log(err.message);
+                    console.error(err.message);
                 }
             });
             db.close();
@@ -119,7 +119,8 @@ wss.on('connection', (ws, req) => {
                     db.run(`update books set own = 1 where invid = "${d.invid}" and own = 0`);
                     db.run(`INSERT INTO TakeHistory (id,pupil,invid,name,wwhen,qwhen,return) VALUES ((select count (*) from TakeHistory)+1,'${d.pupil}','${d.invid}',(select name from books where invid = '${d.invid}'),'${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()}','${d2.getDate()}.${d2.getMonth()+1}.${d2.getFullYear()}','-');`, (err) => {
                         if (err) {
-                            console.log(err.message);
+                            console.log('now');
+                            console.error(err.message);
                         }
                     })
                     // console.log(`INSERT INTO TakeHistory (id,pupil,invid,name,wwhen,qwhen,return) VALUES ((select count (*) from TakeHistory)+1,'${d.pupil}','${d.invid}',(select name from books where invid = '${d.invid}'),'${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()}','${d2.getDate()}.${d2.getMonth()+1}.${d2.getFullYear()}','-');`)
