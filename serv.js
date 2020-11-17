@@ -61,7 +61,7 @@ wss.on('connection', (ws, req) => {
     db.close();
     ws.on('message', (d) => {
         d = JSON.parse(d)
-        fs.appendFile('log.txt', `${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()} ${d1.getHours()}:${d1.getMinutes()} : ${d}`)
+        fs.appendFileSync('log.txt', `${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()} ${d1.getHours()}:${d1.getMinutes()} : ${d}`)
         if (d.action == "get") {
             let db = new sqlite3.Database('sqlite.db', sqlite3.OPEN_READWRITE, (err) => {
                 if (err) {
@@ -162,4 +162,4 @@ http.get('*', (req,res) => {
 .listen(8080);
 
 let d1 = new Date();
-fs.appendFile('log.txt', `${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()} ${d1.getHours()}:${d1.getMinutes()} : Server started`)
+fs.appendFileSync('log.txt', `${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()} ${d1.getHours()}:${d1.getMinutes()} : Server started`)
