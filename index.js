@@ -228,31 +228,6 @@ document.querySelector('#takegive').addEventListener('click', () => {
                 inversionAttempts: "dontInvert",
             });
             if (code) {
-                    // let db = new sqlite3.Database('sqlite.db', sqlite3.OPEN_READWRITE, (err) => {
-                    // if (err) {
-                    //   console.error(err.message);
-                    // }
-                    // db.get(`SELECT * from books where invid = "${code.data}"`, (err, row) => {
-                    //     if (err) {
-                    //         console.error(err);
-                    //     }
-                    //     let d = new Date();
-                    //     if (row.own == '0') {
-                    //         document.getElementById('inputinvid').value = row.id;
-                    //         document.getElementById('inputname').value = row.name;
-                    //         document.getElementById('inputwwhen').value = `${d.getDate()}.${d.getMonth()+1}.${d.getFullYear()}`
-                    //         let d2 = new Date(Date.parse(d)+1209600033)
-                    //         document.getElementById('inputqwhen').value = `${d2.getDate()}.${d2.getMonth()+1}.${d2.getFullYear()}`
-                    //         db.run(`UPDATE books SET own = "1" WHERE id = ${code.data}`)
-                    //     }
-                    //     else {
-                    //         db.run(`UPDATE books SET own = "0" WHERE id = ${code.data}`)
-                    //         db.run(`UPDATE TakeHistory SET return = "${d.getDate()}.${d.getMonth()+1}.${d.getFullYear()}" WHERE invid = ${code.data}`)
-                    //         clsbtn.click();
-                    //         alert('Книга сдана')
-                    //     }
-                    // })
-                    // });
                 if (oldcode.data != code.data) {
                     if (document.querySelector('#myModal1').style.display = "block") {
                         if (document.querySelector('#inputpupil').value != '') {
@@ -273,8 +248,6 @@ document.querySelector('#takegive').addEventListener('click', () => {
                     }
                 }
             } else {
-                // outputMessage.hidden = false;
-                // outputData.parentElement.hidden = true;
             }
         }
         requestAnimationFrame(tick);

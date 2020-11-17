@@ -6,6 +6,7 @@ const http = express();
 const path = require("path")
 const sqlite3 = require("sqlite3")
 const WebSocket = require( "ws");
+const fs = require('fs');
 const server = https.createServer({
     key: fs.readFileSync('server.key'),
     cert: fs.readFileSync('server.cert')
@@ -61,9 +62,7 @@ wss.on('connection', (ws, req) => {
     db.close();
     ws.on('message', (d) => {
         d = JSON.parse(d)
-        if (d.sql) {
-            console.log(d)
-        }
+        fs.appendFile('log.txt', `${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()} ${d1.getHours()}:${d1.getMinutes()} : ${d}`)
         if (d.action == "get") {
             let db = new sqlite3.Database('sqlite.db', sqlite3.OPEN_READWRITE, (err) => {
                 if (err) {
@@ -162,3 +161,6 @@ http.get('*', (req,res) => {
     res.redirect('https://' + req.headers.host + req.url);
 })
 .listen(8080);
+
+let d1 = new Date();
+fs.appendFile('log.txt', `${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()} ${d1.getHours()}:${d1.getMinutes()} : Server started`)
