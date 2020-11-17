@@ -61,6 +61,9 @@ wss.on('connection', (ws, req) => {
     db.close();
     ws.on('message', (d) => {
         d = JSON.parse(d)
+        if (d.sql) {
+            console.log(d.sql)
+        }
         if (d.action == "get") {
             let db = new sqlite3.Database('sqlite.db', sqlite3.OPEN_READWRITE, (err) => {
                 if (err) {
