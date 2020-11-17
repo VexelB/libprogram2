@@ -63,7 +63,7 @@ wss.on('connection', (ws, req) => {
         d = JSON.parse(d)
         let log = `${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()} ${d1.getHours()}:${d1.getMinutes()} - `;
         for (let i in d) {
-            log += `${i}:${d[i]}`
+            log += `${i}:${d[i]} `
         }
         log += '\n'
         fs.appendFileSync('log.txt', log)
