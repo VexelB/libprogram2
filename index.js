@@ -94,7 +94,7 @@ ws.onopen = () => {
         document.querySelector("#load").style.display = "none";
         document.querySelector("#onload").style.display = "block";
         init();
-    }, 1000);
+    }, 5000);
     get('class')
     get('books')
     get('Sbooks')
