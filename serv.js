@@ -61,6 +61,7 @@ wss.on('connection', (ws, req) => {
     db.close();
     ws.on('message', (d) => {
         d = JSON.parse(d)
+        let d1 = new Date();
         let log = `${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()} ${d1.getHours()}:${d1.getMinutes()} - `;
         for (let i in d) {
             log += `${i}:${d[i]} `
@@ -166,5 +167,4 @@ http.get('*', (req,res) => {
 })
 .listen(8080);
 
-let d1 = new Date();
 fs.appendFileSync('log.txt', `${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()} ${d1.getHours()}:${d1.getMinutes()} : Server started \n`)
