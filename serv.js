@@ -71,7 +71,7 @@ wss.on('connection', (ws, req) => {
         if (d.action == "get") {
             let db = new sqlite3.Database('sqlite.db', sqlite3.OPEN_READWRITE, (err) => {
                 if (err) {
-                  console.error(err.message);
+                  console.error(err.message, d);
                 }
             });
             db.serialize(() => {
@@ -84,7 +84,7 @@ wss.on('connection', (ws, req) => {
         else if (d.action == "pupilduty") {
             let db = new sqlite3.Database('sqlite.db', sqlite3.OPEN_READWRITE, (err) => {
                 if (err) {
-                  console.error(err.message);
+                  console.error(err.message, d);
                 }
             });
             db.serialize(() => {
@@ -97,12 +97,12 @@ wss.on('connection', (ws, req) => {
         else if (d.action == "put") {
             let db = new sqlite3.Database('sqlite.db', sqlite3.OPEN_READWRITE, (err) => {
                 if (err) {
-                  console.error(err.message);
+                  console.error(err.message, d);
                 }
             });
             db.run(d.sql, (err)=> {
                 if (err) {
-                    console.error(err.message);
+                    console.error(err.message, d);
                 }
             });
             db.close();
@@ -110,7 +110,7 @@ wss.on('connection', (ws, req) => {
         else if (d.action == "book") {
             let db = new sqlite3.Database('sqlite.db', sqlite3.OPEN_READWRITE, (err) => {
                 if (err) {
-                  console.error(err.message);
+                  console.error(err.message, d);
                 }
             });
             db.serialize(() => {
@@ -119,7 +119,7 @@ wss.on('connection', (ws, req) => {
                     db.run(`update books set own = 0 where invid = "${d.invid}" and own = 1`);
                     db.run(`update TakeHistory set return = '${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()}' where invid = ${d.invid} and return = '-' and pupil = '${d.pupil}'`, (err) => {
                         if (err) {
-                            console.error(err.message);
+                            console.error(err.message, d);
                         }
                     })
                 } else {
@@ -127,7 +127,7 @@ wss.on('connection', (ws, req) => {
                     db.run(`update books set own = 1 where invid = "${d.invid}" and own = 0`);
                     db.run(`INSERT INTO TakeHistory (id,pupil,invid,name,wwhen,qwhen,return) VALUES ((select count (*) from TakeHistory)+1,'${d.pupil}','${d.invid}',(select name from books where invid = '${d.invid}'),'${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()}','${d2.getDate()}.${d2.getMonth()+1}.${d2.getFullYear()}','-');`, (err) => {
                         if (err) {
-                            console.error(err.message);
+                            console.error(err.message, d);
                         }
                     })
                     // console.log(`INSERT INTO TakeHistory (id,pupil,invid,name,wwhen,qwhen,return) VALUES ((select count (*) from TakeHistory)+1,'${d.pupil}','${d.invid}',(select name from books where invid = '${d.invid}'),'${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()}','${d2.getDate()}.${d2.getMonth()+1}.${d2.getFullYear()}','-');`)
