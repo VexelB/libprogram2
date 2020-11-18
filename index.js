@@ -241,7 +241,7 @@ document.querySelector('#takegive').addEventListener('click', () => {
                             ws.send(JSON.stringify(reqbody));
                             alert('Запись отправлена');
                             dutytake();
-                            get('TakeHistory');
+                            // get('TakeHistory');
                         } else {
                             alert('Введите ученика');
                         }
