@@ -11,7 +11,7 @@ const server = https.createServer({
     cert: fs.readFileSync('server.cert')
 }, app)
 const wss = new WebSocket.Server({ server });
-const password = 'random';
+const password = '202020';
 let clients = [];
 
 app.use(express.urlencoded());
