@@ -30,7 +30,7 @@ let get = (x) => {
 let dutytake = () => {
     reqbody.action = "pupilduty";
     reqbody.pupil = document.querySelector('#inputpupil').value;
-    reqbody.sql = `SELECT invid, name, qwhen FROM TakeHistory WHERE pupil = '${reqbody.pupil}' and return = '-'`
+    reqbody.sql = `SELECT invid, name, qwhen FROM TakeHistory WHERE pupil = "${reqbody.pupil}" AND return = "-"`
     ws.send(JSON.stringify(reqbody))
 }
 let update = () => {
