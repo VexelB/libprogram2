@@ -240,6 +240,7 @@ document.querySelector('#takegive').addEventListener('click', () => {
                             reqbody.pupil = document.querySelector('#inputpupil').value;
                             ws.send(JSON.stringify(reqbody));
                             alert('Запись отправлена');
+                            reqbody.subaction = '';
                             dutytake();
                             // get('TakeHistory');
                         } else {
