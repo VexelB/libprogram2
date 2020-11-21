@@ -167,9 +167,9 @@ wss.on('connection', (ws, req) => {
             db.serialize(() => {
                 for (let i in d.fields) {
                     for (let j in d.fields[i]) {
-                        db.all(`select * from ${i} where ${j} LIKE '%${d.search}%'`, (err,rows) => {
+                        db.all(`select * from ${i} where ${d.fields[i][j]} LIKE '%${d.search}%'`, (err,rows) => {
                             ws.send(JSON.stringify({action: d.action, content: rows, table: i}));
-                            console.log(`select * from ${i} where ${j} LIKE '%${d.search}%'`)
+                            console.log(`select * from ${i} where ${d.fields[i][j]} LIKE '%${d.search}%'`)
                         })
                     }
                 }
