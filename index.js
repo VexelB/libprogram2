@@ -182,19 +182,25 @@ ws.onmessage = (d) => {
         }
         for (let i in data.content) {
             for (let q in data.content[i]) {
-                document.querySelector(`#duty #${q}`).innerHTML += `<div class="row" id="row${data.content[i].invid}">${data.content[i][q]} <br></div>  `
+                document.querySelector(`#duty #${q}`).innerHTML += `<div class="row" id="row${data.content[i].invid}">${data.content[i][q]}</div>  `
             }
             duty.push(data.content[i].invid)
         }
     }
     else if (data.action == 'search') {
         if (data.content.length != 0) {
-            document.querySelector('#divsearch').innerHTML += `<div id = "search${data.table}${data.row}">${assoc[data.table]}: ${assoc[data.row]}</div>`
+            document.querySelector('#divsearch').innerHTML += `<div id = "search${data.table}${data.row}">${assoc[data.table]}: ${assoc[data.row]} <br></div>`
             for (let i in data.content[0]) {
                 document.querySelector(`#search${data.table}${data.row}`).innerHTML += `<div class = "table" id="${data.table}${i}"><div class = "tablehead">${assoc[i]}</div></div>`
             }
             for (let i in data.content) {
-                console.log(data.content[i])
+                for (let j in data.content[i]) {
+                    if (j == 'bibl') {
+                        document.querySelector(`#search${data.table}${data.row} #${data.table}${j}`).innerHTML += `<div class="row" id="row${data.content[j+50*(i-1)].id}">><div style="display:none;">${data.content[j+50*(i-1)][q]}</div></div>`
+                    } else {
+                        document.querySelector(`#search${data.table}${data.row} #${data.table}${j}`).innerHTML += `<div class="row" id="row${data.content[j+50*(i-1)].id}">${data.content[j+50*(i-1)][q]}</div>`
+                    }
+                }
             }
         }
     }
