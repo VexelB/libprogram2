@@ -269,7 +269,7 @@ document.querySelector('#takegive').addEventListener('click', () => {
                                 reqbody.invid = code.data;
                                 reqbody.pupil = document.querySelector('#inputpupil').value;
                                 ws.send(JSON.stringify(reqbody));
-                                alert('Запись отправлена');
+                                alert(`Запись отправлена с номером книги ${reqbody.invid} на ${reqbody.pupil}`);
                                 dutytake();
                                 // get('TakeHistory');
                             } else {
