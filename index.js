@@ -196,9 +196,9 @@ ws.onmessage = (d) => {
             for (let i in data.content) {
                 for (let j in data.content[i]) {
                     if (j == 'bibl') {
-                        document.querySelector(`#search${data.table}${data.row} #${data.table}${j}`).innerHTML += `<div class="row" id="row${data.content[j+50*(i-1)].id}">><div style="display:none;">${data.content[j+50*(i-1)][q]}</div></div>`
+                        document.querySelector(`#search${data.table}${data.row} #${data.table}${j}`).innerHTML += `<div class="row" id="row${data.content[i].id}">><div style="display:none;">${data.content[i][j]}</div></div>`
                     } else {
-                        document.querySelector(`#search${data.table}${data.row} #${data.table}${j}`).innerHTML += `<div class="row" id="row${data.content[j+50*(i-1)].id}">${data.content[j+50*(i-1)][q]}</div>`
+                        document.querySelector(`#search${data.table}${data.row} #${data.table}${j}`).innerHTML += `<div class="row" id="row${data.content[i].id}">${data.content[i][j]}</div>`
                     }
                 }
             }
