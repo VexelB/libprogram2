@@ -191,7 +191,7 @@ ws.onmessage = (d) => {
         if (data.content.length != 0) {
             document.querySelector('#divsearch').innerHTML += `<div id = "search${data.table}${data.row}"></div>`
             for (let i in data.content[0]) {
-                document.querySelector(`#search${data.table}${data.row}`).innerHTML += `<div class = "table" id="${data.table}${j}"><div class = "tablehead">${assoc[j]}</div></div>`
+                document.querySelector(`#search${data.table}${data.row}`).innerHTML += `<div class = "table" id="${data.table}${i}"><div class = "tablehead">${assoc[i]}</div></div>`
             }
         }
     }
