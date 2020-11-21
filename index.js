@@ -203,6 +203,7 @@ ws.onmessage = (d) => {
                 }
             }
         }
+        init();
     }
 };
 
