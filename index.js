@@ -182,7 +182,7 @@ ws.onmessage = (d) => {
         }
         for (let i in data.content) {
             for (let q in data.content[i]) {
-                document.querySelector(`#duty #${q}`).innerHTML += `<div class="row" id="row${data.content[i].invid}">${data.content[i][q]}</div>  `
+                document.querySelector(`#duty #${q}`).innerHTML += `<div class="row" id="row${data.content[i].invid}">${data.content[i][q]} <br></div>  `
             }
             duty.push(data.content[i].invid)
         }
@@ -194,7 +194,7 @@ ws.onmessage = (d) => {
                 document.querySelector(`#search${data.table}${data.row}`).innerHTML += `<div class = "table" id="${data.table}${i}"><div class = "tablehead">${assoc[i]}</div></div>`
             }
             for (let i in data.content) {
-                console.log(i)
+                console.log(data.content[i])
             }
         }
     }
