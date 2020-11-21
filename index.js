@@ -227,31 +227,32 @@ document.querySelector('#takegive').addEventListener('click', () => {
             var code = jsQR(imageData.data, imageData.width, imageData.height, {
                 inversionAttempts: "dontInvert",
             });
-            if ((code) && (code.data)) {
-                if (oldcode.data != code.data) {
-                    if (document.querySelector('#myModal1').style.display = "block") {
-                        if (document.querySelector('#inputpupil').value != '') {
-                            oldcode = code;
-                            reqbody.action = "book";
-                            if (duty.includes(code.data)){
-                                reqbody.subaction = "take"
+            if (code) {
+                if (code.data) {
+                    if (oldcode.data != code.data) {
+                        if (document.querySelector('#myModal1').style.display = "block") {
+                            if (document.querySelector('#inputpupil').value != '') {
+                                oldcode = code;
+                                reqbody.action = "book";
+                                if (duty.includes(code.data)){
+                                    reqbody.subaction = "take"
+                                }
+                                else {
+                                    reqbody.subaction = 'give';
+                                }
+                                reqbody.invid = code.data;
+                                reqbody.pupil = document.querySelector('#inputpupil').value;
+                                ws.send(JSON.stringify(reqbody));
+                                alert('Запись отправлена');
+                                dutytake();
+                                // get('TakeHistory');
+                            } else {
+                                alert('Введите ученика');
                             }
-                            else {
-                                reqbody.subaction = 'give';
-                            }
-                            reqbody.invid = code.data;
-                            reqbody.pupil = document.querySelector('#inputpupil').value;
-                            ws.send(JSON.stringify(reqbody));
-                            alert('Запись отправлена');
-                            dutytake();
-                            // get('TakeHistory');
-                        } else {
-                            alert('Введите ученика');
                         }
                     }
-                }
-            } else {
-            }
+                }  
+            } 
         }
         requestAnimationFrame(tick);
     }
