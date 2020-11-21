@@ -185,7 +185,7 @@ ws.onmessage = (d) => {
         }
     }
     else if (data.action == 'search') {
-        if (data.content != []) {
+        if (data.content.length != 0) {
             console.log(data)
         }
     }
