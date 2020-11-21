@@ -164,7 +164,11 @@ wss.on('connection', (ws, req) => {
                 }
             });
             db.serialize(() => {
-                db.run(d.sql);
+                for (let i in ['Sbooks', 'books', 'class', 'pupil', 'staff', 'TakeHistory']) {
+                    db.all(``, (err,rows) => {
+                        ws.send(JSON.stringify({action: d.action, content: rows, table: i}));
+                    })
+                }
             })
             db.close();
         }

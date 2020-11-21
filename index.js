@@ -118,7 +118,7 @@ ws.onmessage = (d) => {
             }
         }
     }
-    if (data.action == "rows") {
+    else if (data.action == "rows") {
         fields[data.table] = []
         for (let i in data.content[0]) {
             fields[data.table].push(i);
@@ -167,7 +167,7 @@ ws.onmessage = (d) => {
             })
         })
     }
-    if (data.action == 'pupilduty') {
+    else if (data.action == 'pupilduty') {
         duty = [];
         if (data.content.length == 0) {
             document.querySelector('#duty').innerHTML = 'Ничего не должен'    
@@ -183,6 +183,9 @@ ws.onmessage = (d) => {
             }
             duty.push(data.content[i].invid)
         }
+    }
+    else if (data.action == 'search') {
+        console.log(data)
     }
 };
 
