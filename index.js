@@ -189,9 +189,12 @@ ws.onmessage = (d) => {
     }
     else if (data.action == 'search') {
         if (data.content.length != 0) {
-            document.querySelector('#divsearch').innerHTML += `<div id = "search${data.table}${data.row}"></div>`
+            document.querySelector('#divsearch').innerHTML += `<div id = "search${data.table}${data.row}">${assoc[data.table]}: ${assoc[data.row]}</div>`
             for (let i in data.content[0]) {
                 document.querySelector(`#search${data.table}${data.row}`).innerHTML += `<div class = "table" id="${data.table}${i}"><div class = "tablehead">${assoc[i]}</div></div>`
+            }
+            for (let i in data.content) {
+                console.log(i)
             }
         }
     }
