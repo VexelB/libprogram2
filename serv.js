@@ -122,7 +122,7 @@ wss.on('connection', (ws, req) => {
                             console.error(err.message, d);
                         }
                     })
-                } else {
+                } else if (d.subaction == 'give'){
                     let d2 = new Date(Date.parse(d1)+1209600033)
                     db.run(`update books set own = 1 where invid = "${d.invid}" and own = 0`);
                     db.run(`INSERT INTO TakeHistory (id,pupil,invid,name,wwhen,qwhen,return) VALUES ((select count (*) from TakeHistory)+1,'${d.pupil}','${d.invid}',(select name from books where invid = '${d.invid}'),'${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()}','${d2.getDate()}.${d2.getMonth()+1}.${d2.getFullYear()}','-');`, (err) => {

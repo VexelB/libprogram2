@@ -236,11 +236,13 @@ document.querySelector('#takegive').addEventListener('click', () => {
                             if (duty.includes(code.data)){
                                 reqbody.subaction = "take"
                             }
+                            else {
+                                reqbody.subaction = 'give';
+                            }
                             reqbody.invid = code.data;
                             reqbody.pupil = document.querySelector('#inputpupil').value;
                             ws.send(JSON.stringify(reqbody));
                             alert('Запись отправлена');
-                            reqbody.subaction = '';
                             dutytake();
                             // get('TakeHistory');
                         } else {
