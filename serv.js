@@ -13,7 +13,6 @@ const server = https.createServer({
 const wss = new WebSocket.Server({ server });
 const password = '202020';
 let clients = [];
-let tables = ['Sbooks', 'books', 'class', 'pupil', 'staff', 'TakeHistory'];
 
 app.use(express.urlencoded());
 
