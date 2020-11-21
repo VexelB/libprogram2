@@ -227,7 +227,7 @@ document.querySelector('#takegive').addEventListener('click', () => {
             var code = jsQR(imageData.data, imageData.width, imageData.height, {
                 inversionAttempts: "dontInvert",
             });
-            if (code.data) {
+            if ((code) && (code.data)) {
                 if (oldcode.data != code.data) {
                     if (document.querySelector('#myModal1').style.display = "block") {
                         if (document.querySelector('#inputpupil').value != '') {
