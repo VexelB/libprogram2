@@ -133,12 +133,15 @@ ws.onmessage = (d) => {
                 
             }
             for (let j = 0; j < 50; j++) {
-                if (data.table == 'pupil') {
-                    document.querySelector('#optionspupil').innerHTML += `<option>${data.content[j+50*(i-1)].FIO}</option>`
+                if (data.content[j+50*(i-1)]) {
+                    if (data.table == 'pupil') {
+                        document.querySelector('#optionspupil').innerHTML += `<option>${data.content[j+50*(i-1)].FIO}</option>`
+                    }
+                    if (data.table == 'staff') {
+                        document.querySelector('#optionspupil').innerHTML += `<option>${data.content[j+50*(i-1)].FIO}</option>`
+                    }
                 }
-                if (data.table == 'staff') {
-                    document.querySelector('#optionspupil').innerHTML += `<option>${data.content[j+50*(i-1)].FIO}</option>`
-                }
+                
                 {
                     for (let q in data.content[j+50*(i-1)]) {
                         if (q == 'bibl') {
