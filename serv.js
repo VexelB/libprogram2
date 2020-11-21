@@ -169,6 +169,7 @@ wss.on('connection', (ws, req) => {
                     for (let j in d.fields) {
                         db.all(`select * from ${tables[i]} where ${d.fields[j]} LIKE '%${d.search}%'`, (err,rows) => {
                             ws.send(JSON.stringify({action: d.action, content: rows, table: tables[i]}));
+                            console.log(rows)
                         })
                     }
                 }
