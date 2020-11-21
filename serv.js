@@ -157,6 +157,17 @@ wss.on('connection', (ws, req) => {
             })
             db.close();
         }
+        else if (d.action == 'search') {
+            let db = new sqlite3.Database('sqlite.db', sqlite3.OPEN_READWRITE, (err) => {
+                if (err) {
+                  console.error(err.message);
+                }
+            });
+            db.serialize(() => {
+                db.run(d.sql);
+            })
+            db.close();
+        }
     })
 })
 server.listen(5353, function () {

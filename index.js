@@ -133,8 +133,10 @@ ws.onmessage = (d) => {
                 
             }
             for (let j = 0; j < 50; j++) {
-                if (data.content[j+50*(i-1)] != undefined)
                 if (data.table == 'pupil') {
+                    document.querySelector('#optionspupil').innerHTML += `<option>${data.content[j+50*(i-1)].FIO}</option>`
+                }
+                if (data.table == 'staff') {
                     document.querySelector('#optionspupil').innerHTML += `<option>${data.content[j+50*(i-1)].FIO}</option>`
                 }
                 {
@@ -192,6 +194,9 @@ document.querySelector('#search').addEventListener('change', (x) => {
     else {
         document.querySelector('#main').style.display = "none";
         document.querySelector('#divsearch').style.display = "block"
+        reqbody.action = 'search';
+        reqbody.search = x.target.value;
+        ws.send(JSON.stringify(reqbody));
     }
 })
 
