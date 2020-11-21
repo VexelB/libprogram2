@@ -13,6 +13,7 @@ const server = https.createServer({
 const wss = new WebSocket.Server({ server });
 const password = '202020';
 let clients = [];
+let tables = ['Sbooks', 'books', 'class', 'pupil', 'staff', 'TakeHistory'];
 
 app.use(express.urlencoded());
 
@@ -164,10 +165,12 @@ wss.on('connection', (ws, req) => {
                 }
             });
             db.serialize(() => {
-                for (let i in ['Sbooks', 'books', 'class', 'pupil', 'staff', 'TakeHistory']) {
-                    db.all(``, (err,rows) => {
-                        ws.send(JSON.stringify({action: d.action, content: rows, table: i}));
-                    })
+                for (let i in tables) {
+                    for (let j in d.fields) {
+                        db.all(`select * from ${tables[i]} where ${d.fields[j]} LIKE '%${d.search}%'`, (err,rows) => {
+                            ws.send(JSON.stringify({action: d.action, content: rows, table: tables[i]}));
+                        })
+                    }
                 }
             })
             db.close();

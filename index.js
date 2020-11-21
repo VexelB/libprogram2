@@ -199,6 +199,7 @@ document.querySelector('#search').addEventListener('change', (x) => {
         document.querySelector('#divsearch').style.display = "block"
         reqbody.action = 'search';
         reqbody.search = x.target.value;
+        reqbody.fields = fields;
         ws.send(JSON.stringify(reqbody));
     }
 })
