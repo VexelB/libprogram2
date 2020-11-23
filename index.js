@@ -208,12 +208,13 @@ ws.onmessage = (d) => {
 
 document.querySelector('#search').addEventListener('change', (x) => {
     if (x.target.value == '') {
-        document.querySelector('#main').style.display = "block";
+        // document.querySelector('#main').style.display = "block";
         document.querySelector('#divsearch').style.display = "none"
     }
     else {
-        document.querySelector('#main').style.display = "none";
+        // document.querySelector('#main').style.display = "none";
         document.querySelector('#divsearch').style.display = "block"
+        document.querySelector('#divsearch').innerHTML = "Поиск:"
         reqbody.action = 'search';
         reqbody.search = x.target.value;
         reqbody.fields = fields;
