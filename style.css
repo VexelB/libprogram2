@@ -64,6 +64,9 @@ a {
 #menu ul li:hover .submenu {
     display: block;
 }
+#menu #reports:hover .submenu {
+    display: block;
+}
 .btns:hover{
     cursor: pointer;
 }

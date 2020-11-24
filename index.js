@@ -55,12 +55,9 @@ let video;
 let head = {};
 let duty = [];
 let oldcode = { data: ''};
-init();
+// table switch lictener
 document.querySelectorAll('.tables').forEach((x) => {
     x.addEventListener('click', (x) => {
-        // if (x.target.id != 'books' && x.target.id != 'staff' && x.target.id != 'Sbooks') {
-        //     get(x.target.id);
-        // }
         document.querySelector('#shapbtns').style.display = "inline-block";
         table = x.target.id;
         document.querySelectorAll('.data').forEach((e) => {
@@ -84,12 +81,9 @@ document.querySelectorAll('.tables').forEach((x) => {
 })
 
 // body
+
+// page load
 ws.onopen = () => {
-    // setTimeout(() => {get('pupil')}, 1000)
-    // setTimeout(() => {get('staff')}, 1000)
-    // setTimeout(() => {get('Sbooks')}, 1000)
-    // setTimeout(() => {get('books')}, 100)
-    // setTimeout(() => {get('class')}, 100)
     setTimeout(() => {
         document.querySelector("#load").style.display = "none";
         document.querySelector("#onload").style.display = "block";
@@ -102,7 +96,6 @@ ws.onopen = () => {
     get('pupil')
     get('TakeHistory')
 };
-
 
 ws.onmessage = (d) => {
     let data = JSON.parse(d.data)
@@ -206,22 +199,7 @@ ws.onmessage = (d) => {
     }
 };
 
-document.querySelector('#search').addEventListener('change', (x) => {
-    if (x.target.value == '') {
-        // document.querySelector('#main').style.display = "block";
-        document.querySelector('#divsearch').style.display = "none"
-    }
-    else {
-        // document.querySelector('#main').style.display = "none";
-        document.querySelector('#divsearch').style.display = "block"
-        document.querySelector('#divsearch').innerHTML = "Поиск:"
-        reqbody.action = 'search';
-        reqbody.search = x.target.value;
-        reqbody.fields = fields;
-        ws.send(JSON.stringify(reqbody));
-    }
-})
-
+// take/give functionality
 document.querySelector('#takegive').addEventListener('click', () => {
     document.querySelector('#myModal1').style.display = "block";
     video = document.createElement("video")
@@ -284,6 +262,25 @@ document.querySelector('#takegive').addEventListener('click', () => {
         requestAnimationFrame(tick);
     }
 })
+
+// listeners
+// search listener
+document.querySelector('#search').addEventListener('change', (x) => {
+    if (x.target.value == '') {
+        // document.querySelector('#main').style.display = "block";
+        document.querySelector('#divsearch').style.display = "none"
+    }
+    else {
+        // document.querySelector('#main').style.display = "none";
+        document.querySelector('#divsearch').style.display = "block"
+        document.querySelector('#divsearch').innerHTML = "Поиск:"
+        reqbody.action = 'search';
+        reqbody.search = x.target.value;
+        reqbody.fields = fields;
+        ws.send(JSON.stringify(reqbody));
+    }
+})
+// add listener
 document.querySelectorAll('#addclose').forEach((x) => {
     x.addEventListener('click', () => {
         x.parentNode.parentNode.parentNode.style.display = "none"
@@ -295,7 +292,6 @@ document.querySelectorAll('#addclose').forEach((x) => {
                 reqbody.fields[x.id.slice(3)] = '-'
             }
         })
-        // put();
         reqbody.action = "put";
         reqbody.table = table;
         reqbody.sql = `INSERT into ${table} values (`
@@ -307,6 +303,7 @@ document.querySelectorAll('#addclose').forEach((x) => {
         update();
     })
 })
+// close addwindow listener
 document.querySelectorAll('#close').forEach((x) => {
     x.addEventListener('click', () => {
         x.parentNode.parentNode.parentNode.style.display = "none";
@@ -321,9 +318,11 @@ document.querySelectorAll('#close').forEach((x) => {
     })
 
 })
+// pupils duty listener
 document.querySelector('#inputpupil').addEventListener('change', (x) => {
     dutytake();
 })
+// addwindow opener listener
 document.querySelector("#addbtn").addEventListener('click', () => {
     document.querySelector('#myModal2 #data2').innerHTML = ''
     for (let i in fields[table]) {
@@ -335,6 +334,7 @@ document.querySelector("#addbtn").addEventListener('click', () => {
     }
     document.querySelector('#myModal2').style.display = "block"
 })
+// dellbtn listener
 document.querySelector('#delbtn').addEventListener('click', () => {
     reqbody.action = 'delete';
     reqbody.delid = document.querySelector('#myModal3 #inputid').value;
@@ -345,6 +345,7 @@ document.querySelector('#delbtn').addEventListener('click', () => {
     document.querySelector('#myModal3').style.display = 'none';
     update();
 })
+// chgbtn listener
 document.querySelector('#chgbtn').addEventListener('click', () => {
     reqbody.action = "change";
     reqbody.table = table;
