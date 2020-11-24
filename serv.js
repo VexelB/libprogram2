@@ -204,6 +204,6 @@ server.listen(5353, function () {
 http.get('*', (req,res) => {
     res.redirect('https://' + req.headers.host + req.url);
 })
-.listen(5353);
+.listen(8080);
 let d1 = new Date();
 fs.appendFileSync('log.txt', `${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()} ${d1.getHours()}:${d1.getMinutes()} : Server started \n`)
