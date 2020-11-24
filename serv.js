@@ -174,6 +174,28 @@ wss.on('connection', (ws, req) => {
             })
             db.close();
         }
+        else if (d.action == 'dutyget') {
+            let db = new sqlite3.Database('sqlite.db', sqlite3.OPEN_READWRITE, (err) => {
+                if (err) {
+                  console.error(err.message);
+                }
+            });
+            db.serialize(() => {
+                let d1 = new Date();
+                if (d1.getDate().toString().length > 1) {
+                    db.all(`SELECT * FROM TakeHistory WHERE qwhen < '${d1.getDate()}' and qwhen like '__.11.2020' and return = '-'`, (err, rows) => {
+                        ws.send(JSON.stringify({action: d.action, content: rows, table: i, row: d.fields[i][j]}));
+                    })
+                } 
+                else if (d1.getDate().toString().length == 1) {
+                    db.all(`SELECT * FROM TakeHistory WHERE qwhen < '${d1.getDate()}' and qwhen like '_.11.2020' and return = '-'`, (err, rows) => {
+                        ws.send(JSON.stringify({action: rows, content: rows, table: i, row: d.fields[i][j]}));
+                    })
+                }
+                
+            })
+            db.close();
+        }
     })
 })
 server.listen(5353, function () {
@@ -182,6 +204,6 @@ server.listen(5353, function () {
 http.get('*', (req,res) => {
     res.redirect('https://' + req.headers.host + req.url);
 })
-.listen(8080);
+.listen(5353);
 let d1 = new Date();
 fs.appendFileSync('log.txt', `${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()} ${d1.getHours()}:${d1.getMinutes()} : Server started \n`)
