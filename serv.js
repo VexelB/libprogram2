@@ -125,7 +125,7 @@ wss.on('connection', (ws, req) => {
                 } else if (d.subaction == 'give'){
                     let d2 = new Date(Date.parse(d1)+1209600033)
                     db.run(`update books set own = 1 where invid = "${d.invid}" and own = 0`);
-                    db.run(`INSERT INTO TakeHistory (id,pupil,invid,name,wwhen,qwhen,return) VALUES ((select count (*) from TakeHistory)+1,'${d.pupil}','${d.invid}',(select name from books where invid = '${d.invid}'),'${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()}','${d2.getDate()}.${d2.getMonth()+1}.${d2.getFullYear()}','-');`, (err) => {
+                    db.run(`INSERT INTO TakeHistory (id,pupil,invid,name,wwhen,qwhen,return) VALUES ((select count (*) from TakeHistory)+1,'${d.pupil}','${d.invid}',(select name from books where invid = '${d.invid}'),'${d1.getDate().toString().padStart(2,'0')}.${d1.getMonth()+1}.${d1.getFullYear()}','${d2.getDate().toString().padStart(2,'0')}.${d2.getMonth()+1}.${d2.getFullYear()}','-');`, (err) => {
                         if (err) {
                             console.error(err.message, d);
                         }
@@ -183,12 +183,12 @@ wss.on('connection', (ws, req) => {
             db.serialize(() => {
                 let d1 = new Date();
                 if (d1.getDate().toString().length > 1) {
-                    db.all(`SELECT * FROM TakeHistory WHERE qwhen < '${d1.getDate()}' and qwhen like '__.11.2020' and return = '-'`, (err, rows) => {
+                    db.all(`SELECT * FROM TakeHistory WHERE qwhen < '${d1.getDate()}' and qwhen like '__.${d1.getMonth()+1}.${d1.getFullYear()}' and return = '-'`, (err, rows) => {
                         ws.send(JSON.stringify({action: d.action, content: rows, table: i, row: d.fields[i][j]}));
                     })
                 } 
                 else if (d1.getDate().toString().length == 1) {
-                    db.all(`SELECT * FROM TakeHistory WHERE qwhen < '${d1.getDate()}' and qwhen like '_.11.2020' and return = '-'`, (err, rows) => {
+                    db.all(`SELECT * FROM TakeHistory WHERE qwhen < '${d1.getDate()}' and qwhen like '_.${d1.getMonth()+1}.${d1.getFullYear()}' and return = '-'`, (err, rows) => {
                         ws.send(JSON.stringify({action: rows, content: rows, table: i, row: d.fields[i][j]}));
                     })
                 }
