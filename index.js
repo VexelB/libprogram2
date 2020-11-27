@@ -81,7 +81,7 @@ document.querySelectorAll('.tables').forEach((x) => {
                 e.style.display = "none"
             }
         })
-        document.querySelector(`#maindata #${x.target.id} div`).style.display = "block"
+        setTimeout(()=> {document.querySelector(`#maindata #${x.target.id} div`).style.display = "block";}, 200);
     })
 })
 
