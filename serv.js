@@ -182,17 +182,9 @@ wss.on('connection', (ws, req) => {
             });
             db.serialize(() => {
                 let d1 = new Date();
-                if (d1.getDate().toString().length > 1) {
-                    db.all(`SELECT * FROM TakeHistory WHERE qwhen < '${d1.getDate()}' and qwhen like '__.${d1.getMonth()+1}.${d1.getFullYear()}' and return = '-'`, (err, rows) => {
-                        ws.send(JSON.stringify({action: d.action, content: rows, table: i, row: d.fields[i][j]}));
-                    })
-                } 
-                else if (d1.getDate().toString().length == 1) {
-                    db.all(`SELECT * FROM TakeHistory WHERE qwhen < '${d1.getDate()}' and qwhen like '_.${d1.getMonth()+1}.${d1.getFullYear()}' and return = '-'`, (err, rows) => {
-                        ws.send(JSON.stringify({action: rows, content: rows, table: i, row: d.fields[i][j]}));
-                    })
-                }
-                
+                db.all(`SELECT * FROM TakeHistory WHERE qwhen <= '${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()}' and return = '-' and qwhen <> '-' and qwhen not like '_.${d1.getMonth()+2}.${d1.getFullYear()}' and qwhen not like '__.${d1.getMonth()+2}.${d1.getFullYear()}'`, (err, rows) => {
+                    ws.send(JSON.stringify({action: d.action, content: rows, table: duty}));
+                })
             })
             db.close();
         }
