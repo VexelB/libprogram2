@@ -64,7 +64,7 @@ document.querySelectorAll('.tables').forEach((x) => {
         table = x.target.id;
         if (table == 'duty') {
             reqbody.action = "dutyget";
-            reqbody.table = x;
+            reqbody.table = table;
             ws.send(JSON.stringify(reqbody))
             reqbody = {}
         }
