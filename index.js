@@ -25,6 +25,7 @@ let get = (x) => {
     reqbody.table = x;
     reqbody.sql = `select * from ${x}`;
     ws.send(JSON.stringify(reqbody))
+    reqbody = {}
 }
 
 let dutytake = () => {
@@ -32,6 +33,7 @@ let dutytake = () => {
     reqbody.pupil = document.querySelector('#inputpupil').value;
     reqbody.sql = `SELECT invid, name, qwhen FROM TakeHistory WHERE pupil = "${reqbody.pupil}" AND return = "-"`
     ws.send(JSON.stringify(reqbody))
+    reqbody = {}
 }
 let update = () => {
     setTimeout(() => {
@@ -64,6 +66,7 @@ document.querySelectorAll('.tables').forEach((x) => {
             reqbody.action = "dutyget";
             reqbody.table = x;
             ws.send(JSON.stringify(reqbody))
+            reqbody = {}
         }
         document.querySelectorAll('.data').forEach((e) => {
             if (e.id == x.target.id) {
@@ -253,6 +256,7 @@ document.querySelector('#takegive').addEventListener('click', () => {
                                 reqbody.invid = code.data;
                                 reqbody.pupil = document.querySelector('#inputpupil').value;
                                 ws.send(JSON.stringify(reqbody));
+                                reqbody = {}
                                 alert(`Запись отправлена с номером книги ${reqbody.invid} на ${reqbody.pupil}`);
                                 dutytake();
                                 // get('TakeHistory');
@@ -283,6 +287,7 @@ document.querySelector('#search').addEventListener('change', (x) => {
         reqbody.search = x.target.value;
         reqbody.fields = fields;
         ws.send(JSON.stringify(reqbody));
+        reqbody = {}
     }
 })
 // add listener
@@ -305,6 +310,7 @@ document.querySelectorAll('#addclose').forEach((x) => {
         }
         reqbody.sql = reqbody.sql.slice(0,reqbody.sql.length-1) + ');'
         ws.send(JSON.stringify(reqbody))
+        reqbody = {}
         update();
     })
 })
@@ -368,6 +374,7 @@ document.querySelector('#chgbtn').addEventListener('click', () => {
     }
     reqbody.sql = reqbody.sql.slice(0, reqbody.sql.length-1) + `where id = ${reqbody.oldid}`;
     ws.send(JSON.stringify(reqbody));
+    reqbody = {};
     document.querySelector('#myModal3').style.display = "none";
     update();
 })
