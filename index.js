@@ -60,7 +60,7 @@ document.querySelectorAll('.tables').forEach((x) => {
     x.addEventListener('click', (x) => {
         document.querySelector('#shapbtns').style.display = "inline-block";
         table = x.target.id;
-        if (table = 'duty') {
+        if (table == 'duty') {
             reqbody.action = "dutyget";
             reqbody.table = x;
             ws.send(JSON.stringify(reqbody))
