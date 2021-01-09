@@ -7,7 +7,11 @@ let init = () => {
             for (let i in temp) {
                 if (temp[i].parentNode) {
                     console.log(temp[i].parentNode.id)
-                    head.fields[fields[temp[i].parentNode.parentNode.parentNode.id][i]] = temp[i].innerText
+                    if (temp[i].parentNode.id == 'booksbibl') {
+                        head.fields[fields[temp[i].parentNode.parentNode.parentNode.id][i]] = temp[i].lastChild.innerText
+                    } else {
+                        head.fields[fields[temp[i].parentNode.parentNode.parentNode.id][i]] = temp[i].innerText
+                    }
                 }   
             }
             document.querySelector('#myModal3 #data3').innerHTML = ''
