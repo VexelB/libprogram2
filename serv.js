@@ -183,16 +183,10 @@ wss.on('connection', (ws, req) => {
             db.serialize(() => {
                 let d1 = new Date();
                 db.all(`SELECT * FROM TakeHistory WHERE return = '-'`, (err, rows) => {
-                    for (let i in rows) {
-                        let qwhen = rows[i].qwhen.split('.')
-                        if (!(parseInt(qwhen[0]) <= d1.getDate() && parseInt(qwhen[1] <= d1.getMonth()+1) && parseInt(qwhen[2] <= d1.getFullYear()))) {
-                            rows.slice()
-                        }
-                    }
                     let i = 0
                     while (i <= rows.length) {
                         if (!(parseInt(qwhen[0]) <= d1.getDate() && parseInt(qwhen[1] <= d1.getMonth()+1) && parseInt(qwhen[2] <= d1.getFullYear()))) {
-                            rows.slice(i,1)
+                            rows.splice(i,1)
                             i -= 1
                         }
                         i += 1
