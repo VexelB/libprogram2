@@ -185,11 +185,13 @@ wss.on('connection', (ws, req) => {
                 db.all(`SELECT * FROM TakeHistory WHERE return = '-'`, (err, rows) => {
                     let i = 1
                     while (i <= rows.length) {
-                        let qwhen = rows[i].qwhen.split('.')
-                        console.log(i,rows[i],qwhen,qwhen[0],d1.getDate(),parseInt(qwhen[1]),d1.getMonth()+1,parseInt(qwhen[2]),d1.getFullYear(),!(parseInt(qwhen[0]) <= d1.getDate() && parseInt(qwhen[1]) <= d1.getMonth()+1 && parseInt(qwhen[2]) <= d1.getFullYear()))
-                        if (parseInt(qwhen[0]) > d1.getDate() && parseInt(qwhen[1]) >= d1.getMonth()+1 && parseInt(qwhen[2]) >= d1.getFullYear()) {
-                            rows.splice(i,1)
-                            i -= 1
+                        if (rows[i].qwhen) {
+                            let qwhen = rows[i].qwhen.split('.')
+                            console.log(i,rows[i],qwhen,qwhen[0],d1.getDate(),parseInt(qwhen[1]),d1.getMonth()+1,parseInt(qwhen[2]),d1.getFullYear(),!(parseInt(qwhen[0]) <= d1.getDate() && parseInt(qwhen[1]) <= d1.getMonth()+1 && parseInt(qwhen[2]) <= d1.getFullYear()))
+                            if (parseInt(qwhen[0]) > d1.getDate() && parseInt(qwhen[1]) >= d1.getMonth()+1 && parseInt(qwhen[2]) >= d1.getFullYear()) {
+                                rows.splice(i,1)
+                                i -= 1
+                            }
                         }
                         i += 1
                     }
