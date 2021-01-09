@@ -6,7 +6,6 @@ let init = () => {
             head.fields = {}
             for (let i in temp) {
                 if (temp[i].parentNode) {
-                    console.log(temp[i].parentNode.id)
                     if (temp[i].parentNode.id == 'booksbibl') {
                         head.fields[fields[temp[i].parentNode.parentNode.parentNode.id][i]] = temp[i].lastChild.innerText
                     } else {

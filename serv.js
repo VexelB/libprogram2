@@ -125,7 +125,7 @@ wss.on('connection', (ws, req) => {
                 } else if (d.subaction == 'give'){
                     let d2 = new Date(Date.parse(d1)+1209600033)
                     db.run(`update books set own = 1 where invid = "${d.invid}" and own = 0`);
-                    db.run(`INSERT INTO TakeHistory (id,pupil,invid,name,wwhen,qwhen,return) VALUES ((select count (*) from TakeHistory)+1,'${d.pupil}','${d.invid}',(select name from books where invid = '${d.invid}'),'${d1.getDate().toString().padStart(2,'0')}.${d1.getMonth()+1}.${d1.getFullYear()}','${d2.getDate().toString().padStart(2,'0')}.${d2.getMonth()+1}.${d2.getFullYear()}','-');`, (err) => {
+                    db.run(`INSERT INTO TakeHistory (id,pupil,invid,name,wwhen,qwhen,return) VALUES ((select count (*) from TakeHistory)+1,'${d.pupil}','${d.invid}',(select name from books where invid = '${d.invid}'),'${d1.getDate().toString().padStart(2,'0')}.${(d1.getMonth()+1).toString().padStart(2,'0')}.${d1.getFullYear()}','${d2.getDate().toString().padStart(2,'0')}.${(d2.getMonth()+1).toString().padStart(2,'0')}.${d2.getFullYear()}','-');`, (err) => {
                         if (err) {
                             console.error(err.message, d);
                         }
@@ -183,6 +183,20 @@ wss.on('connection', (ws, req) => {
             db.serialize(() => {
                 let d1 = new Date();
                 db.all(`SELECT * FROM TakeHistory WHERE qwhen <= '${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()}' and return = '-' and qwhen <> '-' and qwhen not like '_.${d1.getMonth()+2}.${d1.getFullYear()}' and qwhen not like '__.${d1.getMonth()+2}.${d1.getFullYear()}'`, (err, rows) => {
+                    for (let i in rows) {
+                        let qwhen = rows[i].qwhen.split('.')
+                        if (!(parseInt(qwhen[0]) <= d1.getDate() && parseInt(qwhen[1] <= d1.getMonth()+1) && parseInt(qwhen[2] <= d1.getFullYear()))) {
+                            rows.slice()
+                        }
+                    }
+                    let i = 0
+                    while (i <= rows.length) {
+                        if (!(parseInt(qwhen[0]) <= d1.getDate() && parseInt(qwhen[1] <= d1.getMonth()+1) && parseInt(qwhen[2] <= d1.getFullYear()))) {
+                            rows.slice(i,1)
+                            i -= 1
+                        }
+                        i += 1
+                    }
                     ws.send(JSON.stringify({action: 'rows', content: rows, table: 'duty'}));
                 })
             })
