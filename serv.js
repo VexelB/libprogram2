@@ -188,7 +188,7 @@ wss.on('connection', (ws, req) => {
                         let qwhen = rows[i].qwhen.split('.')
                         console.log(i,rows[i],qwhen,qwhen[0],d1.getDate(),parseInt(qwhen[1]),d1.getMonth()+1,parseInt(qwhen[2]),d1.getFullYear(),!(parseInt(qwhen[0]) <= d1.getDate() && parseInt(qwhen[1]) <= d1.getMonth()+1 && parseInt(qwhen[2]) <= d1.getFullYear()))
                         if (parseInt(qwhen[0]) > d1.getDate() && parseInt(qwhen[1]) >= d1.getMonth()+1 && parseInt(qwhen[2]) >= d1.getFullYear()) {
-                            rows.slice(i-1,1)
+                            rows.slice(i,1)
                             i -= 1
                         }
                         i += 1
