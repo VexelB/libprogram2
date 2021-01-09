@@ -189,9 +189,9 @@ wss.on('connection', (ws, req) => {
                         console.log(!(parseInt(qwhen[0]) <= d1.getDate() && parseInt(qwhen[1]) <= d1.getMonth()+1 && parseInt(qwhen[2]) <= d1.getFullYear()))
                         if (!(parseInt(qwhen[0]) <= d1.getDate() && parseInt(qwhen[1]) <= d1.getMonth()+1 && parseInt(qwhen[2]) <= d1.getFullYear())) {
                             rows.slice(i,1)
-                            i -= 1
+                            i -= 100
                         }
-                        i += 1
+                        i += 100
                     }
                     ws.send(JSON.stringify({action: 'rows', content: rows, table: 'duty'}));
                 })
