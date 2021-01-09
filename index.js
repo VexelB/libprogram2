@@ -6,6 +6,7 @@ let init = () => {
             head.fields = {}
             for (let i in temp) {
                 if (temp[i].parentNode) {
+                    console.log(temp[i].id)
                     head.fields[fields[temp[i].parentNode.parentNode.parentNode.id][i]] = temp[i].innerText
                 }   
             }
