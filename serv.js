@@ -182,7 +182,7 @@ wss.on('connection', (ws, req) => {
             });
             db.serialize(() => {
                 let d1 = new Date();
-                db.all(`SELECT * FROM TakeHistory WHERE qwhen <= '${d1.getDate()}.${d1.getMonth()+1}.${d1.getFullYear()}' and return = '-' and qwhen <> '-' and qwhen not like '_.${d1.getMonth()+2}.${d1.getFullYear()}' and qwhen not like '__.${d1.getMonth()+2}.${d1.getFullYear()}'`, (err, rows) => {
+                db.all(`SELECT * FROM TakeHistory WHERE return = '-'`, (err, rows) => {
                     for (let i in rows) {
                         let qwhen = rows[i].qwhen.split('.')
                         if (!(parseInt(qwhen[0]) <= d1.getDate() && parseInt(qwhen[1] <= d1.getMonth()+1) && parseInt(qwhen[2] <= d1.getFullYear()))) {
