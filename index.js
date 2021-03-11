@@ -143,6 +143,7 @@ ws.onmessage = (d) => {
     }
     else if (data.action == "rows") {
         fields[data.table] = []
+        console.log(data.content)
         for (let i in data.content[0]) {
             fields[data.table].push(i);
         }

@@ -191,7 +191,7 @@ wss.on('connection', (ws, req) => {
             });
             db.serialize(() => {
                 let d1 = new Date();
-                db.all(`SELECT * FROM TakeHistory WHERE return = '-'`, (err, rows) => {
+                db.all(`SELECT TakeHistory.id, TakeHistory.pupil, pupil.class, TakeHistory.invid, TakeHistory.name, TakeHistory.wwhen, TakeHistory.qwhen FROM TakeHistory INNER JOIN pupil on TakeHistory.pupil = pupil.FIO WHERE return = '-' `, (err, rows) => {
                     let i = 1
                     while (i < rows.length) {
                         if (rows[i].qwhen) {
