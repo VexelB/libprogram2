@@ -76,7 +76,7 @@ wss.on('connection', (ws, req) => {
             });
             if (d.page === 0) {
                 db.serialize(() => {
-                    db.all(d.sql, (err,rows) => {
+                    db.all(`select * from ${d.table}`, (err,rows) => {
                         ws.send(JSON.stringify({action: "pages", content: rows, table: d.table}))
                     })
                 })

@@ -24,12 +24,13 @@ let init = () => {
         })
     })
 }
-let get = (x) => {
+let get = (x, i) => {
     reqbody.action = "get";
     reqbody.table = x;
-    reqbody.sql = `select * from ${x}`;
-    ws.send(JSON.stringify(reqbody))
-    reqbody = {}
+    reqbody.page = i;
+    reqbody.sql = `select * from ${x} limit ${(i-1)*50}, 50`;
+    ws.send(JSON.stringify(reqbody));
+    reqbody = {};
 }
 
 let dutytake = () => {
@@ -100,13 +101,13 @@ ws.onopen = () => {
         document.querySelector("#load").style.display = "none";
         document.querySelector("#onload").style.display = "block";
         init();
-    }, 5000);
-    get('class')
-    get('books')
-    get('Sbooks')
-    get('staff')
-    get('pupil')
-    get('TakeHistory')
+    }, 1000);
+    get('class', 0)
+    get('books', 0)
+    get('Sbooks', 0)
+    get('staff', 0)
+    get('pupil', 0)
+    get('TakeHistory', 0)
 };
 
 ws.onmessage = (d) => {
@@ -122,6 +123,18 @@ ws.onmessage = (d) => {
                 datas.push(i.name);
             }
         }
+    }
+    else if (data.action == "pages") {
+        document.querySelector(`#pages #${data.table}`).innerHTML = ``;
+        for (let i = 1; i <= Math.ceil(data.content.length / 50); i++) {
+            document.querySelector(`#pages #${data.table}`).innerHTML += `<div class = "page" id = "page${i}">${i}</div>`;
+        }
+        // page switch listener
+        document.querySelectorAll('#pages .page').forEach((x) => {
+            x.addEventListener('click', (q) => {
+                get(table, q.target.innerHTML)
+            })
+        })
     }
     else if (data.action == "rows") {
         fields[data.table] = []
