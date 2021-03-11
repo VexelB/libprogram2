@@ -148,11 +148,11 @@ ws.onmessage = (d) => {
             fields[data.table].push(i);
         }
         document.querySelector(`#maindata `).innerHTML = ``;
+        for (let j in data.content[0]) {
+            document.querySelector(`#maindata `).innerHTML += `<div class = "table" id="${data.table}${j}"><div class = "tablehead">${assoc[j]}</div></div>`
+            
+        }
         for (let i = 1; i <= Math.ceil(data.content.length / 50); i++) {
-            for (let j in data.content[0]) {
-                document.querySelector(`#maindata `).innerHTML += `<div class = "table" id="${data.table}${j}"><div class = "tablehead">${assoc[j]}</div></div>`
-                
-            }
             for (let j = 0; j < 50; j++) {              
                 for (let q in data.content[j+50*(i-1)]) {
                     if (q == 'bibl') {
