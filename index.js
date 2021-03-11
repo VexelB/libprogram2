@@ -149,7 +149,13 @@ ws.onmessage = (d) => {
             }
             for (let j = 0; j < 50; j++) {              
                 for (let q in data.content[j+50*(i-1)]) {
-                    document.querySelector(`#maindata #${data.table}${q}`).innerHTML += `<div class="row" id="row${data.content[j+50*(i-1)].id}">${data.content[j+50*(i-1)][q]}</div>  `
+                    if (q == 'bibl') {
+                        document.querySelector(`#maindata #${data.table}${q}`).innerHTML += `<div class="row" id="row${data.content[j+50*(i-1)].id}">><div style="display:none;">${data.content[j+50*(i-1)][q]}</div></div>  `
+                    }
+                    else {
+                        document.querySelector(`#maindata #${data.table}${q}`).innerHTML += `<div class="row" id="row${data.content[j+50*(i-1)].id}">${data.content[j+50*(i-1)][q]}</div>  `
+                    }
+                    
                 }
             }
         }
