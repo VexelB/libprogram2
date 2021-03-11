@@ -2,14 +2,14 @@
 let init = () => {
     document.querySelectorAll('.row').forEach((x) => {
         x.addEventListener('click', () => {
-            let temp = document.querySelectorAll(`#${x.parentNode.parentNode.parentNode.id} #${x.id}`)
+            let temp = document.querySelectorAll(`#${x.parentNode.parentNode.id} #${x.id}`)
             head.fields = {}
             for (let i in temp) {
                 if (temp[i].parentNode) {
                     if (temp[i].parentNode.id == 'booksbibl') {
-                        head.fields[fields[temp[i].parentNode.parentNode.parentNode.id][i]] = temp[i].lastChild.innerText
+                        head.fields[fields[table][i]] = temp[i].lastChild.innerText
                     } else {
-                        head.fields[fields[temp[i].parentNode.parentNode.parentNode.id][i]] = temp[i].innerText
+                        head.fields[fields[table][i]] = temp[i].innerText
                     }
                 }   
             }
@@ -89,7 +89,7 @@ document.querySelectorAll('.tables').forEach((x) => {
                 e.style.display = "none"
             }
         })
-        setTimeout(()=> {document.querySelector(`#maindata #${x.target.id} div`).style.display = "block";}, 200);
+        get(table, 1)
     })
 })
 
@@ -100,7 +100,7 @@ ws.onopen = () => {
     setTimeout(() => {
         document.querySelector("#load").style.display = "none";
         document.querySelector("#onload").style.display = "block";
-        init();
+        // init();
     }, 1000);
     get('class', 0)
     get('books', 0)
@@ -141,52 +141,19 @@ ws.onmessage = (d) => {
         for (let i in data.content[0]) {
             fields[data.table].push(i);
         }
-        document.querySelector(`#pages #${data.table}`).innerHTML = ``;
-        document.querySelector(`#maindata #${data.table}`).innerHTML = ``;
+        document.querySelector(`#maindata `).innerHTML = ``;
         for (let i = 1; i <= Math.ceil(data.content.length / 50); i++) {
-            document.querySelector(`#pages #${data.table}`).innerHTML += `<div class = "page" id = "page${i}">${i}</div>`;
-            document.querySelector(`#maindata #${data.table}`).innerHTML += `<div class = "data" id = "page${i}" style="display:none"></div>`;
             for (let j in data.content[0]) {
-                document.querySelector(`#maindata #${data.table} #page${i}`).innerHTML += `<div class = "table" id="${data.table}${j}"><div class = "tablehead">${assoc[j]}</div></div>`
+                document.querySelector(`#maindata `).innerHTML += `<div class = "table" id="${data.table}${j}"><div class = "tablehead">${assoc[j]}</div></div>`
                 
             }
-            for (let j = 0; j < 50; j++) {
-                if (data.content[j+50*(i-1)]) {
-                    if (data.table == 'pupil') {
-                        document.querySelector('#optionspupil').innerHTML += `<option>${data.content[j+50*(i-1)].FIO}</option>`
-                    }
-                    if (data.table == 'staff') {
-                        document.querySelector('#optionspupil').innerHTML += `<option>${data.content[j+50*(i-1)].FIO}</option>`
-                    }
-                }
-                
-                {
-                    for (let q in data.content[j+50*(i-1)]) {
-                        if (q == 'bibl') {
-                            document.querySelector(`#maindata #page${i} #${data.table}${q}`).innerHTML += `<div class="row" id="row${data.content[j+50*(i-1)].id}">><div style="display:none;">${data.content[j+50*(i-1)][q]}</div></div>  `;
-                        }
-                        else {
-                            document.querySelector(`#maindata #page${i} #${data.table}${q}`).innerHTML += `<div class="row" id="row${data.content[j+50*(i-1)].id}">${data.content[j+50*(i-1)][q]}</div>  `
-                        }
-                        amounts[data.table] = data.content[j+50*(i-1)].id;
-                    }
+            for (let j = 0; j < 50; j++) {              
+                for (let q in data.content[j+50*(i-1)]) {
+                    document.querySelector(`#maindata #${data.table}${q}`).innerHTML += `<div class="row" id="row${data.content[j+50*(i-1)].id}">${data.content[j+50*(i-1)][q]}</div>  `
                 }
             }
         }
-
-        // page switch listener
-        document.querySelectorAll('#pages .page').forEach((x) => {
-            x.addEventListener('click', (q) => {
-                document.querySelectorAll(`#maindata #${data.table} .data`).forEach((w) => {
-                    if(q.target.id == w.id) {
-                        w.style.display = "block";
-                    }
-                    else {
-                        w.style.display = "none";
-                    }
-                })
-            })
-        })
+        init()
     }
     else if (data.action == 'pupilduty') {
         duty = [];
