@@ -41,13 +41,7 @@ let dutytake = () => {
     reqbody = {}
 }
 let update = () => {
-    setTimeout(() => {
-        get(table);
-        setTimeout(() => {
-            document.querySelector(`#maindata #${table}`).firstChild.style.display = 'block';
-            init();
-        }, 500);
-    }, 500);
+    get (table, )
 }
 
 // init
@@ -56,6 +50,7 @@ let reqbody = {};
 let assoc = {};
 let datas = [];
 let table = '';
+let page = 0
 let amounts = {};
 let fields = {};
 let video;
@@ -132,9 +127,19 @@ ws.onmessage = (d) => {
         // page switch listener
         document.querySelectorAll('#pages .page').forEach((x) => {
             x.addEventListener('click', (q) => {
+                page = parseInt(q.target.innerHTML)
                 get(table, q.target.innerHTML)
             })
         })
+        if (data.table == 'pupil' || data.table == 'staff'){
+            for (let i = 1; i <= Math.ceil(data.content.length / 50); i++) {
+                for (let j = 0; j < 50; j++) {
+                    if (data.content[j+50*(i-1)]){
+                        document.querySelector('#optionspupil').innerHTML += `<option>${data.content[j+50*(i-1)].FIO}</option>`
+                    }
+                }
+            }
+        }
     }
     else if (data.action == "rows") {
         fields[data.table] = []
