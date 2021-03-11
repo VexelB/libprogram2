@@ -74,11 +74,20 @@ wss.on('connection', (ws, req) => {
                   console.error(err.message, d);
                 }
             });
-            db.serialize(() => {
-                db.all(d.sql, (err,rows) => {
-                    ws.send(JSON.stringify({action: "rows", content: rows, table: d.table}))
+            if (d.page === 0) {
+                db.serialize(() => {
+                    db.all(d.sql, (err,rows) => {
+                        ws.send(JSON.stringify({action: "pages", content: rows, table: d.table}))
+                    })
                 })
-            })
+            }
+            else {
+                db.serialize(() => {
+                    db.all(d.sql, (err,rows) => {
+                        ws.send(JSON.stringify({action: "rows", content: rows, table: d.table}))
+                    })
+                })
+            }
             db.close();
         }
         else if (d.action == "pupilduty") {
