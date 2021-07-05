@@ -299,11 +299,9 @@ document.querySelectorAll('#addclose').forEach((x) => {
         })
         reqbody.action = "put";
         reqbody.table = table;
-        reqbody.sql = `INSERT into ${table} values ( (select count(*) from ${table}) + 1,`
+        reqbody.sql = `INSERT into ${table} values (`
         for (let i in reqbody.fields) {
-            if (i != 'id'){
-                reqbody.sql += `'${reqbody.fields[i]}',`
-            }
+            reqbody.sql += `'${reqbody.fields[i]}',`
         }
         reqbody.sql = reqbody.sql.slice(0,reqbody.sql.length-1) + ');'
         ws.send(JSON.stringify(reqbody))
